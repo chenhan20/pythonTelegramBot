@@ -1,8 +1,8 @@
 # pythonTelegramBot
-python Telegram Bot
+
+-- python Telegram Bot --
 
 功能:發送圖片給加入bot的會員(目前訊息OK)
-
 
 ```bash
 pip install python-telegram-bot --upgrade
