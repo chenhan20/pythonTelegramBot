@@ -20,8 +20,6 @@ def sendMessage(msg):
     for chat_id in chatIdList:
         print(msg)
         bot.sendMessage(chat_id, msg, parse_mode='html',disable_web_page_preview=True)
-        # , disable_web_page_preview=None, disable_notification=None, reply_to_message_id=None, reply_markup=None)
-
 
 def sendImage(image):
     for chat_id in chatIdList:
