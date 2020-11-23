@@ -12,7 +12,7 @@ pip install configparser
 pip install dataframe-image
 ```
 
-### 需新建 setting.ini 內容為
+## 需新建 setting.ini 內容為
 
 ```bash
 [DEFAULT]
