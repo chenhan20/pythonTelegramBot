@@ -6,10 +6,9 @@ python Telegram Bot
 
 ```bash
 pip install python-telegram-bot --upgrade
-pip install telepot
-pip install telepot --upgrade  # 更新
 pip install configparser
 pip install dataframe-image
+pip install tabulate
 ```
 
 ## 需新建 setting.ini 內容為
