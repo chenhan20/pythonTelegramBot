@@ -33,11 +33,12 @@ def sendThree():
             tempStr = " ".join(three)
             str = str + tempStr + '\n'
         sendMessage('<pre>' + str + '</pre>')
+    else:
+        sendMessage('<pre>' + str + '\n尚未發表</pre>')
+
 
 def getNewThree():
-    fail = True
-    while fail:
-        threeList = three.getThree('20201124')
-        return threeList['data']
+    threeList = three.getThree(dateStr)
+    return threeList['data']
 
 sendThree()
