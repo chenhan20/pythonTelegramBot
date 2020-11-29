@@ -82,6 +82,7 @@ def test():
     getStockThreeBuySell()
 
 
+
 if __name__ == '__main__':
     now = datetime.datetime.now()
     date = now - datetime.timedelta(days=1)
