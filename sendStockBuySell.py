@@ -12,9 +12,9 @@ def getStockThreeBuySell():
         for stock in threeStojckList:
             stockName = stock[0] + '(' + stock[1]+ ')'
             buySell = converterNumber(stock[18])
-            strTemp = stockName + buySell + '張\n'
+            strTemp = stockName + '<b>' + buySell + '張</b>\n'
             str = str + strTemp
-        telegramBot.sendMessage('<pre>' + str.replace(' ', '') + '</pre>')
+        telegramBot.sendMessage(str.replace(' ', ''))
     else:
         print(dateStr + '查無資料')
     

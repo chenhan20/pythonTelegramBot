@@ -13,7 +13,7 @@ def sendThree():
         for data in threeData['data']:
             tempStr = data[0] + ' : ' + data[3]
             str = str + tempStr + '\n'
-        telegramBot.sendMessage('<pre>' + str + '</pre>')
+        telegramBot.sendMessage(str)
     else:
         print(dateStr + '查無資料')
 
