@@ -6,10 +6,10 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 
 def getStockThreeBuySell():
-    threeStojckList = three.getStockThreeBuySell(dateStr)
-    if(len(threeStojckList) != 0):
+    threeStockList = three.getStockThreeBuySell(dateStr)
+    if(len(threeStockList) != 0):
         str = dateStr + '三大法人個股買賣超\n'
-        for stock in threeStojckList:
+        for stock in threeStockList:
             stockName = stock[0] + '(' + stock[1]+ ')'
             buySell = converterNumber(stock[18])
             strTemp = stockName + '<b>' + buySell + '張</b>\n'

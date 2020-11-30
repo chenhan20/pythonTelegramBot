@@ -60,7 +60,7 @@ def getThreeBuyDetail(date, stockNum):
 
 
 def less_than_three(symbol):
-    watchList = ['2330', '2337', '2454', '2377', '2308', '2382']
+    watchList = ['2330', '2337', '2454', '2377', '2308', '2382','2303']
     return symbol[0] in watchList
 
 
@@ -71,7 +71,21 @@ def getStockThreeBuySell(dateStr):
     stockData = json.loads(res.text)
 
     if stockData['stat'] == 'OK':
-        fliterList = filter(less_than_three, stockData['data'])
+        fliterList = filter(less_than_three, stockData['data9'])
+        return list(fliterList)
+    else:
+        print(stockData['stat'])
+        return []
+
+
+def getStockPrice(dateStr):
+    url = ' https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + dateStr +'&type=ALLBUT0999'
+    # url = 'https://www.twse.com.tw/fund/T86?response=json&date=' + dateStr +'&selectType=ALL'
+    res = requests.get(url, headers=headers)
+    stockData = json.loads(res.text)
+
+    if stockData['stat'] == 'OK':
+        fliterList = filter(less_than_three, stockData['data9'])
         return list(fliterList)
     else:
         print(stockData['stat'])
@@ -79,7 +93,7 @@ def getStockThreeBuySell(dateStr):
 
 
 def test():
-    getStockThreeBuySell()
+    print(getStockPrice('20201130'))
 
 
 
@@ -87,5 +101,4 @@ if __name__ == '__main__':
     now = datetime.datetime.now()
     date = now - datetime.timedelta(days=1)
     print('Call it locally')
-
     test()
