@@ -80,20 +80,19 @@ def getStockThreeBuySell(dateStr):
 
 def getStockPrice(dateStr):
     url = ' https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + dateStr +'&type=ALLBUT0999'
-    # url = 'https://www.twse.com.tw/fund/T86?response=json&date=' + dateStr +'&selectType=ALL'
     res = requests.get(url, headers=headers)
     stockData = json.loads(res.text)
 
     if stockData['stat'] == 'OK':
-        fliterList = filter(less_than_three, stockData['data9'])
-        return list(fliterList)
+        fliterList = list(filter(less_than_three, stockData['data9']))
+        return sorted(fliterList, key = lambda s: s[10], reverse = True)
     else:
         print(stockData['stat'])
         return []
 
 
 def test():
-    print(getStockPrice('20201130'))
+    print(getStockPrice('20201201'))
 
 
 
