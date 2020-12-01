@@ -10,7 +10,7 @@ def getStockThreeBuySell():
     if(len(threeStockList) != 0):
         str = dateStr + '三大法人個股買賣超\n'
         for stock in threeStockList:
-            stockName = stock[0] + '(' + stock[1]+ ')'
+            stockName = '<code>' + stock[0] + '(' + stock[1]+ ')</code>'
             buySell = converterNumber(stock[18])
             strTemp = stockName + '<b>' + buySell + '張</b>\n'
             str = str + strTemp
