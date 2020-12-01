@@ -60,7 +60,7 @@ def getThreeBuyDetail(date, stockNum):
 
 
 def less_than_three(symbol):
-    watchList = ['2330', '2337', '2454', '2377', '2308', '2382','2303']
+    watchList = ['2330', '2337', '2454', '2377', '2308', '2382','2382','2892','2884','2886','2303']
     return symbol[0] in watchList
 
 
@@ -71,7 +71,7 @@ def getStockThreeBuySell(dateStr):
     stockData = json.loads(res.text)
 
     if stockData['stat'] == 'OK':
-        fliterList = filter(less_than_three, stockData['data9'])
+        fliterList = filter(less_than_three, stockData['data'])
         return list(fliterList)
     else:
         print(stockData['stat'])

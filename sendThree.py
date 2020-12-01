@@ -11,12 +11,12 @@ def sendThree():
         str = str + threeData['fields'][0] + \
             ' : ' + threeData['fields'][3] + '\n'
         for data in threeData['data']:
-            tempStr = data[0] + ' : ' + data[3]
+            tempStr = data[0] + ' : <b>' + data[3] + '</b>'
             str = str + tempStr + '\n'
         telegramBot.sendMessage(str)
     else:
         print(dateStr + '查無資料')
 
-
+        
 if __name__ == '__main__':
     sendThree()

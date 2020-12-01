@@ -10,7 +10,7 @@ def sendStockDayPrice():
     if(len(stockPriceList) != 0):
         str = dateStr + '個股收盤\n'
         for stock in stockPriceList:
-            stockName = stock[0] + '(' + stock[1]+ ')'
+            stockName = '<code>' + stock[0] + '(' + stock[1]+ ')</code>'
             price = stock[8]
             chgPrefix = converterPrefix(stock[9])
             chg = stock[10]
@@ -24,9 +24,9 @@ def sendStockDayPrice():
 def converterPrefix(prefix):
     converterPrefix = ''
     if(prefix=='<p style= color:red>+</p>'):
-        converterPrefix='➕'
+        converterPrefix='🔺'
     elif(prefix=='<p style= color:green>-</p>'):
-        converterPrefix='➖'
+        converterPrefix='🔻'
     return converterPrefix
         
 
