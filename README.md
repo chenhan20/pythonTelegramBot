@@ -34,5 +34,11 @@ Settings -> Config Vars -> 新增一個**key = TOKEN ,value = 你的TOKEN** 填�
 
 ### 設定排程
 
-heroku Scheduled 設定下午三點去抓
+heroku Scheduled 
 *是使用UTC時間 記得要轉換*  
+| name | 說明  | 時間 |   |   |
+|---|---|---|---|---|
+| sendStockDayPrice.py  | 個股收盤價  | 設定下午兩點  |   |   |
+| sendThree.py  | 三大法人買賣超  | 設定下午三點  |   |   |
+| sendStockBuySell.py  |  三大法人個股買賣超 | 設定下午四點半  |   |   |
+
