@@ -6,7 +6,7 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 
 def sendStockDayPrice():
-    stockPriceList = three.getStockPrice(dateStr)
+    stockPriceList = three.getStockPrice('20201221')
     if(len(stockPriceList) != 0):
         str = dateStr + '個股收盤\n'
         for stock in stockPriceList:
@@ -14,7 +14,8 @@ def sendStockDayPrice():
             price = stock[8]
             chgPrefix = converterPrefix(stock[9])
             chg = stock[10]
-            strTemp = stockName + '：<b>' + price + '</b>(' + chgPrefix + chg  +')\n'
+            chgPercent = float(chg) / float(price) * 100
+            strTemp = stockName + '：<b>' + price + '</b>[' + chgPrefix + chg  +'][{:.2f}%'.format(chgPercent) +']\n'
             str = str + strTemp
         telegramBot.sendMessage(str.replace('', ''))
     else:
@@ -31,4 +32,10 @@ def converterPrefix(prefix):
         
 
 if __name__ == '__main__':
+    # chg = "9.0"
+    # price = "708.00"
+    
+    print("go")
+    # print(float(price))
+    # print('percent: {:.2f}%'.format(float(chg)/float(price)*100))
     sendStockDayPrice()

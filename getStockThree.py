@@ -85,14 +85,14 @@ def getStockPrice(dateStr):
 
     if stockData['stat'] == 'OK':
         fliterList = list(filter(less_than_three, stockData['data9']))
-        return sorted(fliterList, key = lambda s: s[10], reverse = True)
+        return sorted(fliterList, key = lambda s: float(s[10]), reverse = True)
     else:
         print(stockData['stat'])
         return []
 
 
 def test():
-    print(getStockPrice('20201201'))
+    getStockPrice('20201221')
 
 
 
