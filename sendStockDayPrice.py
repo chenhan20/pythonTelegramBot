@@ -32,10 +32,4 @@ def converterPrefix(prefix):
         
 
 if __name__ == '__main__':
-    # chg = "9.0"
-    # price = "708.00"
-    
-    print("go")
-    # print(float(price))
-    # print('percent: {:.2f}%'.format(float(chg)/float(price)*100))
     sendStockDayPrice()
