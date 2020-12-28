@@ -92,12 +92,46 @@ def getStockPrice(dateStr):
 
 
 def test():
-    getStockPrice('20201221')
+    stockPriceList = getStockPrice('20201228')
+    str = ''
+    upList = []
+    downList = []
+    noneList = []
+    sendStr = '20201228' + '個股收盤\n'
+    for stock in stockPriceList:
+        prefix = stock[9];
+        if(prefix=='<p style= color:red>+</p>'):
+            upList.append(stock);
+        elif(prefix=='<p style= color:green>-</p>'):
+            downList.append(stock);
+        else:
+            noneList.append(stock)
+    sendStr = sendStr + converterStockList(' - 漲😁 -',upList)
+    sendStr = sendStr + converterStockList(' - 跌😣 -',downList)
+    sendStr = sendStr + converterStockList(' - 無變化🙄 -',noneList)
+    print(sendStr)
+
+def converterStockList(title,stockList):
+    str = '<code>' + title + '</code>\n';
+    for stock in stockList:
+        stockName = '<code>' + stock[0] + stock[1]+ '</code>'
+        price = stock[8]
+        chgPrefix = converterPrefix(stock[9])
+        chg = stock[10]
+        chgPercent = float(chg) / float(price) * 100
+        chgText = '(' + chgPrefix + chg  +' | {:.2f}%'.format(chgPercent) +')'
+        strTemp = stockName + ':<b>' + price + '</b>' + chgText
+        str = str + strTemp +'\n'
+    return str;
 
 
+def converterPrefix(prefix):
+    converterPrefix = ''
+    if(prefix=='<p style= color:red>+</p>'):
+        converterPrefix='🔺'
+    elif(prefix=='<p style= color:green>-</p>'):
+        converterPrefix='🔻'
+    return converterPrefix
 
 if __name__ == '__main__':
-    now = datetime.datetime.now()
-    date = now - datetime.timedelta(days=1)
-    print('Call it locally')
     test()
