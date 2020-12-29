@@ -3,6 +3,8 @@ import json
 import requests
 import time
 import datetime
+import telegramBot
+
 # 偽瀏覽器
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -44,7 +46,6 @@ def getThree(date):
 
 
 def getThreeBuyDetail(date, stockNum):
-    # url = 'https://www.twse.com.tw/fund/T86?response=json&date=20201111&selectType=ALL'
     url = 'https://www.twse.com.tw/exchangeReport/STOCK_DAY?date=' + \
         date.strftime("%Y%m%d")+'&stockNo=' + stockNum
 
@@ -92,46 +93,7 @@ def getStockPrice(dateStr):
 
 
 def test():
-    stockPriceList = getStockPrice('20201228')
-    str = ''
-    upList = []
-    downList = []
-    noneList = []
-    sendStr = '20201228' + '個股收盤\n'
-    for stock in stockPriceList:
-        prefix = stock[9];
-        if(prefix=='<p style= color:red>+</p>'):
-            upList.append(stock);
-        elif(prefix=='<p style= color:green>-</p>'):
-            downList.append(stock);
-        else:
-            noneList.append(stock)
-    sendStr = sendStr + converterStockList(' - 漲😁 -',upList)
-    sendStr = sendStr + converterStockList(' - 跌😣 -',downList)
-    sendStr = sendStr + converterStockList(' - 無變化🙄 -',noneList)
-    print(sendStr)
-
-def converterStockList(title,stockList):
-    str = '<code>' + title + '</code>\n';
-    for stock in stockList:
-        stockName = '<code>' + stock[0] + stock[1]+ '</code>'
-        price = stock[8]
-        chgPrefix = converterPrefix(stock[9])
-        chg = stock[10]
-        chgPercent = float(chg) / float(price) * 100
-        chgText = '(' + chgPrefix + chg  +' | {:.2f}%'.format(chgPercent) +')'
-        strTemp = stockName + ':<b>' + price + '</b>' + chgText
-        str = str + strTemp +'\n'
-    return str;
-
-
-def converterPrefix(prefix):
-    converterPrefix = ''
-    if(prefix=='<p style= color:red>+</p>'):
-        converterPrefix='🔺'
-    elif(prefix=='<p style= color:green>-</p>'):
-        converterPrefix='🔻'
-    return converterPrefix
+    print('test')
 
 if __name__ == '__main__':
     test()
