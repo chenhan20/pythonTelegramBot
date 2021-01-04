@@ -20,24 +20,23 @@ def getStockThreeBuySell():
                 overSellList.append(stock)
             else:
                 noneList.append(stock)
-        if(len(overbuyList) > 0):
-            sendStr = sendStr + converterBuySellList('　　😁買超😁', overbuyList)
-        if(len(overSellList) > 0):
-            sendStr = sendStr + converterBuySellList('　　😥賣超😥', overSellList)
-        if(len(noneList) > 0):
-            sendStr = sendStr + converterBuySellList('　　😑無變化😑', noneList)
+        sendStr = sendStr + converterBuySellList('-😚買超😚', overbuyList)
+        sendStr = sendStr + converterBuySellList('-😒賣超😒', overSellList)
+        sendStr = sendStr + converterBuySellList('-😑無變化😑', noneList)
         telegramBot.sendMessage(sendStr.replace(' ', ''))
     else:
         print(dateStr + '查無資料')
     
 
 def converterBuySellList(title, stockList):
-    str = '<code>' + title + '</code>\n'
-    for stock in stockList:
-        stockName = '<code>' + stock[0] + '(' + stock[1]+ ')</code>'
-        buySell = converterNumber(stock[18])
-        strTemp = stockName + '<b>' + buySell + '張</b>\n'
-        str = str + strTemp
+    str = ''
+    if(len(stockList) > 0):
+        str += '<code>' + title + '</code>\n'
+        for stock in stockList:
+            stockName = '<code>' + stock[0] + '(' + stock[1]+ ')</code>'
+            buySell = converterNumber(stock[18])
+            strTemp = stockName + '<b>' + buySell + '張</b>\n'
+            str = str + strTemp
     return str
 
 

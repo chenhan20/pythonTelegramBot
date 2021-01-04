@@ -20,6 +20,7 @@ def sendStockDayPrice():
                 downList.append(stock)
             else:
                 noneList.append(stock)
+
         sendStr = sendStr + converterStockList('- 📈📈📈漲📈📈📈 - ', upList)
         sendStr = sendStr + converterStockList('- 〽〽〽跌〽〽〽 - ', downList)
         sendStr = sendStr + converterStockList('- 💨💨無變化💨💨 - ', noneList)
@@ -38,16 +39,18 @@ def converterPrefix(prefix):
 
 
 def converterStockList(title, stockList):
-    str = '<code>' + title + '</code>\n'
-    for stock in stockList:
-        stockName = '<code>' + stock[0] + stock[1] + '</code>'
-        price = stock[8]
-        chgPrefix = converterPrefix(stock[9])
-        chg = stock[10]
-        chgPercent = float(chg) / float(price) * 100
-        chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
-        strTemp = stockName + ':<b>' + price + '</b>' + chgText
-        str = str + strTemp + '\n'
+    str = ''
+    if(len(stockList) > 0):
+        str += '<code>' + title + '</code>\n'
+        for stock in stockList:
+            stockName = '<code>' + stock[0] + stock[1] + '</code>'
+            price = stock[8]
+            chgPrefix = converterPrefix(stock[9])
+            chg = stock[10]
+            chgPercent = float(chg) / float(price) * 100
+            chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
+            strTemp = stockName + ':<b>' + price + '</b>' + chgText
+            str = str + strTemp + '\n'
     return str
 
 
