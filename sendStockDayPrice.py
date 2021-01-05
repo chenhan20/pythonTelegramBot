@@ -43,7 +43,7 @@ def converterStockList(title, stockList):
     if(len(stockList) > 0):
         str += '<code>' + title + '</code>\n'
         for stock in stockList:
-            stockName = '<code>' + stock[0] + stock[1] + '</code>'
+            stockName = '<a href="https://www.wantgoo.com/stock/' + stock[0] +'">' + stock[0] + stock[1] + '</a>'
             price = stock[8]
             chgPrefix = converterPrefix(stock[9])
             chg = stock[10]
