@@ -3,6 +3,8 @@ import json
 import requests
 import time
 import datetime
+import telegramBot
+
 # 偽瀏覽器
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -44,7 +46,6 @@ def getThree(date):
 
 
 def getThreeBuyDetail(date, stockNum):
-    # url = 'https://www.twse.com.tw/fund/T86?response=json&date=20201111&selectType=ALL'
     url = 'https://www.twse.com.tw/exchangeReport/STOCK_DAY?date=' + \
         date.strftime("%Y%m%d")+'&stockNo=' + stockNum
 
@@ -85,19 +86,14 @@ def getStockPrice(dateStr):
 
     if stockData['stat'] == 'OK':
         fliterList = list(filter(less_than_three, stockData['data9']))
-        return sorted(fliterList, key = lambda s: s[10], reverse = True)
+        return sorted(fliterList, key = lambda s: float(s[10]), reverse = True)
     else:
         print(stockData['stat'])
         return []
 
 
 def test():
-    print(getStockPrice('20201201'))
-
-
+    print('test')
 
 if __name__ == '__main__':
-    now = datetime.datetime.now()
-    date = now - datetime.timedelta(days=1)
-    print('Call it locally')
     test()

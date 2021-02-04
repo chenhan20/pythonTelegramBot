@@ -2,7 +2,7 @@
 
 ### python Telegram Bot
 
-__功能:發送圖片給加入bot的會員(目前訊息OK)__
+__功能:發送每日收盤資訊(個股收盤價、三大法人買賣超、三大法人個股買賣超)
 
 ```bash
 pip install python-telegram-bot --upgrade
