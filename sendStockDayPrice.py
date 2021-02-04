@@ -6,7 +6,10 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 
 def sendStockDayPrice():
-    stockPriceList = three.getStockPrice(dateStr)
+    stockDayData = three.getStockDayDetail(dateStr)
+    stockPriceList = stockDayData['stockPriceLsit']
+    dayList = stockDayData['dayList']
+    print(dayList)
     if(len(stockPriceList) != 0):
         upList = []
         downList = []
@@ -21,6 +24,7 @@ def sendStockDayPrice():
             else:
                 noneList.append(stock)
 
+        sendStr = sendStr + converterDayList('-  - ', dayList)
         sendStr = sendStr + converterStockList('- 📈📈📈漲📈📈📈 - ', upList)
         sendStr = sendStr + converterStockList('- 〽〽〽跌〽〽〽 - ', downList)
         sendStr = sendStr + converterStockList('- 💨💨無變化💨💨 - ', noneList)
@@ -31,9 +35,10 @@ def sendStockDayPrice():
 
 def converterPrefix(prefix):
     converterPrefix = ''
-    if(prefix == '<p style= color:red>+</p>'):
+    print(prefix)
+    if(prefix.find('color:red')!=-1):
         converterPrefix = '🔺'
-    elif(prefix == '<p style= color:green>-</p>'):
+    elif(prefix.find('color:green')!=-1):
         converterPrefix = '🔻'
     return converterPrefix
 
@@ -50,6 +55,19 @@ def converterStockList(title, stockList):
             chgPercent = float(chg) / float(price) * 100
             chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
             strTemp = stockName + ':<b>' + price + '</b>' + chgText
+            str = str + strTemp + '\n'
+    return str
+    
+def converterDayList(title, dayList):
+    str = ''
+    if(len(dayList) > 0):
+        for stock in dayList:
+            chgPrefix = converterPrefix(stock[2])
+            price = stock[1]
+            chg = stock[3]
+            chgPercent = float(stock[4])
+            chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
+            strTemp = '加權指數:<b>' + price  + '</b>' + chgText
             str = str + strTemp + '\n'
     return str
 

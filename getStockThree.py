@@ -64,6 +64,10 @@ def less_than_three(symbol):
     watchList = ['2330', '2337', '2454', '2377', '2308', '2382','2382','2892','2884','2886','2303','2603','2609']
     return symbol[0] in watchList
 
+def less_than_day(symbol):
+    watchList = ['發行量加權股價指數']
+    return symbol[0] in watchList
+
 
 def getStockThreeBuySell(dateStr):
     
@@ -79,17 +83,21 @@ def getStockThreeBuySell(dateStr):
         return []
 
 
-def getStockPrice(dateStr):
-    url = ' https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + dateStr +'&type=ALLBUT0999'
+def getStockDayDetail(dateStr):
+    url = 'https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + dateStr +'&type=ALL'
     res = requests.get(url, headers=headers)
     stockData = json.loads(res.text)
+    dayData = {}
 
     if stockData['stat'] == 'OK':
         fliterList = list(filter(less_than_three, stockData['data9']))
-        return sorted(fliterList, key = lambda s: float(s[10]), reverse = True)
+        dayList = list(filter(less_than_day, stockData['data1']))
+        dayData['stockPriceLsit'] = sorted(fliterList, key = lambda s: float(s[10]), reverse = True)
+        dayData['dayList'] = dayList
     else:
         print(stockData['stat'])
-        return []
+
+    return dayData
 
 
 def test():
