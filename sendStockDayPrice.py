@@ -9,11 +9,12 @@ def sendStockDayPrice():
     stockDayData = three.getStockDayDetail(dateStr)
     stockPriceList = stockDayData['stockPriceLsit']
     dayList = stockDayData['dayList']
+    upDown = stockDayData['upDown']
     if(len(stockPriceList) != 0):
         upList = []
         downList = []
         noneList = []
-        sendStr = dateStr + '個股收盤\n'
+        sendStr = dateStr + '收盤資訊\n'
         for stock in stockPriceList:
             prefix = stock[9]
             if(prefix == '<p style= color:red>+</p>'):
@@ -23,10 +24,11 @@ def sendStockDayPrice():
             else:
                 noneList.append(stock)
 
-        sendStr = sendStr + converterDayList('-  - ', dayList)
-        sendStr = sendStr + converterStockList('- 📈📈📈漲📈📈📈 - ', upList)
-        sendStr = sendStr + converterStockList('- 〽〽〽跌〽〽〽 - ', downList)
-        sendStr = sendStr + converterStockList('- 💨💨無變化💨💨 - ', noneList)
+        sendStr = sendStr + converterDayList(dayList)
+        sendStr = sendStr + converterupDown(upDown)
+        sendStr = sendStr + converterStockList('-📈📈📈漲📈📈📈- ', upList)
+        sendStr = sendStr + converterStockList('-〽〽〽跌〽〽〽- ', downList)
+        sendStr = sendStr + converterStockList('-💨💨無變化💨💨- ', noneList)
         telegramBot.sendMessage(sendStr)
     else:
         print(dateStr + '查無資料')
@@ -56,7 +58,7 @@ def converterStockList(title, stockList):
             str = str + strTemp + '\n'
     return str
     
-def converterDayList(title, dayList):
+def converterDayList(dayList):
     str = ''
     if(len(dayList) > 0):
         for stock in dayList:
@@ -68,6 +70,15 @@ def converterDayList(title, dayList):
             chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
             strTemp = stockName + ':<b>' + price  + '</b>' + chgText
             str = str + strTemp + '\n'
+    return str
+
+def converterupDown(upDown):
+    str = ''
+    if(len(upDown) > 0):
+        for stock in upDown:
+            stockName = '<a href="https://www.wantgoo.com/stock/advance-decline-line">' + stock[0] + '</a>:'
+            str += stockName + '<b>' + stock[2]  + '</b>' + '家\n'
+
     return str
 
 

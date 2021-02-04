@@ -68,6 +68,10 @@ def less_than_day(symbol):
     watchList = ['發行量加權股價指數']
     return symbol[0] in watchList
 
+def less_than_updown(symbol):
+    watchList = ['上漲(漲停)','下跌(跌停)']
+    return symbol[0] in watchList
+
 
 def getStockThreeBuySell(dateStr):
     
@@ -92,8 +96,10 @@ def getStockDayDetail(dateStr):
     if stockData['stat'] == 'OK':
         fliterList = list(filter(less_than_three, stockData['data9']))
         dayList = list(filter(less_than_day, stockData['data1']))
+        upDown = list(filter(less_than_updown, stockData['data8']))
         dayData['stockPriceLsit'] = sorted(fliterList, key = lambda s: float(s[10]), reverse = True)
         dayData['dayList'] = dayList
+        dayData['upDown'] = upDown
     else:
         print(stockData['stat'])
 
