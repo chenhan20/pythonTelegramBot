@@ -9,7 +9,6 @@ def sendStockDayPrice():
     stockDayData = three.getStockDayDetail(dateStr)
     stockPriceList = stockDayData['stockPriceLsit']
     dayList = stockDayData['dayList']
-    print(dayList)
     if(len(stockPriceList) != 0):
         upList = []
         downList = []
@@ -35,7 +34,6 @@ def sendStockDayPrice():
 
 def converterPrefix(prefix):
     converterPrefix = ''
-    print(prefix)
     if(prefix.find('color:red')!=-1):
         converterPrefix = '🔺'
     elif(prefix.find('color:green')!=-1):
@@ -62,12 +60,13 @@ def converterDayList(title, dayList):
     str = ''
     if(len(dayList) > 0):
         for stock in dayList:
+            stockName = '<a href="https://www.wantgoo.com/stock/0000">加權指數</a>'
             chgPrefix = converterPrefix(stock[2])
             price = stock[1]
             chg = stock[3]
             chgPercent = float(stock[4])
             chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
-            strTemp = '加權指數:<b>' + price  + '</b>' + chgText
+            strTemp = stockName + ':<b>' + price  + '</b>' + chgText
             str = str + strTemp + '\n'
     return str
 
