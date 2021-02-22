@@ -9,6 +9,23 @@ import telegramBot
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
+def getHolding():
+    # 持股資料 懶得寫資料庫 先這樣弄就好==
+    holdingList = [{'symbol':'2330','shares':450,'avgCost':403.73}
+    ,{'symbol':'2337','shares':1000,'avgCost':39.07}
+    ,{'symbol':'2609','shares':425 ,'avgCost':24.32}
+    ,{'symbol':'2454','shares':50  ,'avgCost':877.14}
+    ,{'symbol':'2379','shares':30  ,'avgCost':495.4}
+    ,{'symbol':'2303','shares':100 ,'avgCost':47.74}
+    ,{'symbol':'2308','shares':25  ,'avgCost':220.07}
+    ,{'symbol':'2892','shares':575 ,'avgCost':21.7}
+    ,{'symbol':'2886','shares':668 ,'avgCost':29.93}
+    ,{'symbol':'2884','shares':481 ,'avgCost':25.85}
+    ,{'symbol':'2382','shares':62  ,'avgCost':77.59}
+    ,{'symbol':'2377','shares':101 ,'avgCost':111.85}
+    ,{'symbol':'0056','shares':267  ,'avgCost':30.64}]
+    return holdingList
+
 
 def converterNumber(num):
     numberLength = len(str(num))
