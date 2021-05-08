@@ -49,7 +49,7 @@ def converterStockList(title, stockList):
         str += '<code>' + title + '</code>\n'
         for stock in stockList:
             stockName = '<a href="https://www.wantgoo.com/stock/' + stock[0] +'">' + stock[0] + stock[1] + '</a>'
-            price = stock[8]
+            price = stock[8].replace(',', '')
             chgPrefix = converterPrefix(stock[9])
             chg = stock[10]
             chgPercent = float(chg) / float(price) * 100
