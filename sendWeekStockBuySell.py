@@ -1,14 +1,14 @@
+import commonAPI as common
 import getStockThree as three
 import datetime
 import telegramBot
 
-dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
-
-def getDayStockThreeBuySell():
-    threeStockList = three.getDayStockThreeBuySell(dateStr)
+def getWeekStockThreeBuySell():
+    dateStr = common.getWeekStartDate();
+    threeStockList = three.getWeekStockThreeBuySell(dateStr)
     if(len(threeStockList) != 0):
-        sendStr = dateStr + '- 三大法人個股買賣超\n'
+        sendStr = dateStr + '-(當周) 三大法人個股買賣超\n'
         overbuyList = []
         overSellList = []
         noneList = []
@@ -52,4 +52,4 @@ def converterNumber(number):
 
 
 if __name__ == '__main__':
-    getDayStockThreeBuySell()
+    getWeekStockThreeBuySell()

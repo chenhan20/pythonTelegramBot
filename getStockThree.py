@@ -90,7 +90,7 @@ def less_than_updown(symbol):
     return symbol[0] in watchList
 
 
-def getStockThreeBuySell(dateStr):
+def getDayStockThreeBuySell(dateStr):
     
     url = 'https://www.twse.com.tw/fund/T86?response=json&date=' + dateStr +'&selectType=ALL'
     res = requests.get(url, headers=headers)
@@ -103,6 +103,20 @@ def getStockThreeBuySell(dateStr):
         print(stockData['stat'])
         return []
 
+
+
+def getWeekStockThreeBuySell(dateStr):
+    
+    url = 'https://www.twse.com.tw/fund/TWT54U?response=json&date=' + dateStr +'&selectType=ALL'
+    res = requests.get(url, headers=headers)
+    stockData = json.loads(res.text)
+
+    if stockData['stat'] == 'OK':
+        fliterList = filter(less_than_three, stockData['data'])
+        return list(fliterList)
+    else:
+        print(stockData['stat'])
+        return []
 
 def getStockDayDetail(dateStr):
     url = 'https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + dateStr +'&type=ALL'
