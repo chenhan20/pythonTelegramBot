@@ -78,7 +78,7 @@ def getThreeBuyDetail(date, stockNum):
 
 
 def less_than_three(symbol):
-    watchList = ['2330', '2454', '3034','2379','3105', '2317', '2377', '2308','2382','2892','2884','2886']
+    watchList = ['2330', '2454' , '2377', '2308','2382','2886','2603','2609','2606']
     return symbol[0] in watchList
 
 def less_than_day(symbol):
