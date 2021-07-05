@@ -31,13 +31,11 @@ PORT = YOUR BOT PORT
 token改為這樣取 然後heroku要設定
 Settings -> Config Vars -> 新增一個**key = TOKEN ,value = 你的TOKEN** 填寫自己bot的TOKEN
 
+heroku上面的是使用SSL連線 不需要那麼多資訊 只要Heroku上面的url就行(因為在同一包內)
+
 ``` base
 token = os.environ['TOKEN']
-DATABASE = os.environ['DATABASE']
-USER = os.environ['USER']
-PASSWORD = os.environ['PASSWORD']
-HOST = os.environ['HOST']
-PORT = os.environ['PORT']
+databaseUrl = os.environ['DATABASE_URL']
 ```
 
 ------------
