@@ -18,7 +18,10 @@ pip install tabulate
 ```bash
 [DEFAULT]
 TOKEN = YOUR BOT TOKEN
-
+DATABASE = YOUR BOT DATABASE
+USER = YOUR BOT USER
+PASSWORD = YOUR BOT PASSWORD
+PORT = YOUR BOT PORT
 ```
 
 ------------
@@ -28,7 +31,14 @@ TOKEN = YOUR BOT TOKEN
 token改為這樣取 然後heroku要設定
 Settings -> Config Vars -> 新增一個**key = TOKEN ,value = 你的TOKEN** 填寫自己bot的TOKEN
 
-`token = os.environ['TOKEN']`
+``` base
+token = os.environ['TOKEN']
+DATABASE = os.environ['DATABASE']
+USER = os.environ['USER']
+PASSWORD = os.environ['PASSWORD']
+HOST = os.environ['HOST']
+PORT = os.environ['PORT']
+```
 
 ------------
 
@@ -43,9 +53,8 @@ heroku Scheduled
 | sendStockBuySell.py  |  三大法人個股買賣超 | 設定下午四點半  |
 
 
-```sql
-INSERT INTO public.follow_stock_list(
-	follow_stock_id, stock_code)
+ ```sql
+INSERT INTO public.follow_stock(user_id,stock_code)
 VALUES 
     (1, '2330'),
     (1, '2377'),
@@ -56,4 +65,4 @@ VALUES
     (1, '2609'),
     (1, '2606'),
     (1, '2615');
-```
+ ```

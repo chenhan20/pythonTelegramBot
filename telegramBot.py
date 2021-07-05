@@ -13,7 +13,7 @@ config.read('setting.ini')
 
 token = config['DEFAULT']['TOKEN']
 bot = telegram.Bot(token=token)
-chatIdList = [919045167]  # 要放送給誰
+chatIdList = [919045167]  # 要放送給誰 之後要抓DB(account.telegram_user_id)
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 

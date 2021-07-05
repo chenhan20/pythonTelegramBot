@@ -1,6 +1,7 @@
 import getStockThree as three
 import datetime
 import telegramBot
+import getDb
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 

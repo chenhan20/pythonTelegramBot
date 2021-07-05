@@ -4,6 +4,7 @@ import requests
 import time
 import datetime
 import telegramBot
+import getDb
 
 # 偽瀏覽器
 headers = {
@@ -76,9 +77,14 @@ def getThreeBuyDetail(date, stockNum):
         print(stockData['stat'])
         return []
 
+def follow_stock_code(userId):
+    # userId先給1 之後再看怎麼抓發送者
+    watchList = getDb.getFollowStock(userId)
+    return watchList
+
+watchList = follow_stock_code(1)
 
 def less_than_three(symbol):
-    watchList = ['2330', '2454' , '2377', '2308','2382','2886','2603','2609','2606']
     return symbol[0] in watchList
 
 def less_than_day(symbol):
@@ -91,7 +97,7 @@ def less_than_updown(symbol):
 
 
 def getDayStockThreeBuySell(dateStr):
-    
+
     url = 'https://www.twse.com.tw/fund/T86?response=json&date=' + dateStr +'&selectType=ALL'
     res = requests.get(url, headers=headers)
     stockData = json.loads(res.text)
