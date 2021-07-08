@@ -1,6 +1,7 @@
 import getStockThree as three
 import datetime
 import telegramBot
+import getDb
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
@@ -13,7 +14,10 @@ def sendThree():
         for data in threeData['data']:
             tempStr = '<code>' + data[0] + '</code> : <b>' + data[3] + '</b>'
             str = str + tempStr + '\n'
-        telegramBot.sendMessage(str)
+
+        telegramIds = getDb.getTelegramIds()
+        for id in telegramIds:
+            telegramBot.newSendMessage(str, id)
     else:
         print(dateStr + '查無資料')
 

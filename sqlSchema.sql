@@ -12,3 +12,8 @@ CREATE TABLE follow_stock(
 	user_id bigint ,
 	stock_code VARCHAR ( 10 )
 );
+
+
+INSERT INTO public.accounts(
+	username, email, created_on, last_login, telegram_user_id, telegram_push_enabled)
+	VALUES ('林信毅', 'XXXXX@gmail.com', now(), now(), '1888409915', true);
