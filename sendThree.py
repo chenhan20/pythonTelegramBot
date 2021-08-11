@@ -9,7 +9,6 @@ def sendThree():
     threeData = three.getThree(dateStr)
     str = '<b>' + dateStr + '三大法人買賣超</b>\n'
     if(len(threeData['data']) != 0):
-        print( threeData) 
         str = str + threeData['fields'][0] + \
             ' : ' + threeData['fields'][3] + '\n'
         for data in threeData['data']:
