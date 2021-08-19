@@ -12,12 +12,19 @@ def sendThree():
         str = str + threeData['fields'][0] + \
             ' : ' + threeData['fields'][3] + '\n'
         for data in threeData['data']:
-            tempStr = '<code>' + data[0] + '</code> : <b>' + data[3] + '</b>'
-            if(data[0]=='合計'):
-                tempStr += '\n -----------------------------------'
-                tempStr += '\n<b>總買' + data[1] + '  總賣' + data[2] + '</b>'
+            tempStr = ''
+            if(data[0] != '合計'):
+                tempStr += '<code>' + data[0] + '</code> : <b>' + data[3] + '</b>'
+            else:
+                tempStr += '--------------------------------------'
+                tempStr += '\n<b>總買</b><code>' + data[1] + '</code>  <b>總賣</b><code>' + data[2] + '</code>'
+                tempStr += '\n--------------------'
+                tempStr += '\n| <code>' + data[0] + '</code> : <b>' + data[3] + '</b> |'
+                tempStr += '\n--------------------'
+                
             str = str + tempStr + '\n'
-
+            
+        # print(str)
         # 測試用這個 
         # telegramBot.newSendMessage(str, '919045167')
 
