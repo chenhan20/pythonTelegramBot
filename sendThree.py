@@ -7,6 +7,7 @@ import prettytable as pt
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 def sendThree():
+    dateStr = '20210820'
     threeData = three.getThree(dateStr)
     tb1 = pt.PrettyTable()
     tb1.set_style(pt.DEFAULT)
@@ -18,12 +19,21 @@ def sendThree():
         tb1.align[col1] = "c"
         tb1.align[col2] = "r"
         for data in threeData['data']:
-            name = data[0].replace("(", "").replace(")", "");
-            dataCol_1 = name[0:2]
-            dataCol_2 = data[3]
-            tb1.add_row([dataCol_1, dataCol_2])
+            if(data[0] != '合計'):
+                name = data[0].replace("(", "").replace(")", "");
+                dataCol_1 = name[0:2]
+                dataCol_2 = data[3]
+                tb1.add_row([dataCol_1, dataCol_2])
+            else:
+                name = data[0].replace("(", "").replace(")", "");
+                dataCol_1 = name[0:2]
+                dataCol_2 = data[3]
+                totalBuy = '總買' + data[1]
+                totalSell = '總賣' + data[2]
+                tb1.add_row([dataCol_1, dataCol_2])
+                tb1.add_row([totalBuy,totalSell])
                 
-        # print(tb1.get_string(title=title))
+            # print(tb1.get_string(title=title))
         tbStr = '<pre>' + tb1.get_string(title=title) + '</pre>'
 
         # 測試用這個 
