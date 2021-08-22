@@ -7,7 +7,6 @@ import prettytable as pt
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 def sendThree():
-    dateStr = '20210820'
     threeData = three.getThree(dateStr)
     tb1 = pt.PrettyTable()
     tb1.set_style(pt.DEFAULT)
