@@ -9,6 +9,9 @@ pip install python-telegram-bot --upgrade
 pip install configparser
 pip install dataframe-image
 pip install tabulate
+pip install tabulate
+pip install prettytable
+
 ```
 
 ------------
