@@ -9,14 +9,14 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 def sendThree():
     threeData = three.getThree(dateStr)
     tb1 = pt.PrettyTable()
-    tb1.set_style(pt.DEFAULT)
+    tb1.set_style(pt.MSWORD_FRIENDLY)
     title = dateStr + '三大法人買賣超'
     if(len(threeData['data']) != 0):
         col1 = threeData['fields'][0]
         col2 = threeData['fields'][3]
         tb1.field_names = [col1,col2]
-        tb1.align[col1] = "c"
-        tb1.align[col2] = "r"
+        tb1.align[col1] = "l"
+        tb1.align[col2] = "l"
         for data in threeData['data']:
             if(data[0] != '合計'):
                 name = data[0].replace("(", "").replace(")", "");
@@ -27,12 +27,15 @@ def sendThree():
                 name = data[0].replace("(", "").replace(")", "");
                 dataCol_1 = name[0:2]
                 dataCol_2 = data[3]
-                totalBuy = '總買' + data[1]
-                totalSell = '總賣' + data[2]
-                tb1.add_row([dataCol_1, dataCol_2])
+                totalBuy = data[1]
+                totalSell = data[2]
+                tb1.add_row(['*********','*********'])
+                tb1.add_row(['Total Buy','Total Sell'])
                 tb1.add_row([totalBuy,totalSell])
+                tb1.add_row([dataCol_1, dataCol_2])
+                tb1.add_row(['*********','*********'])
                 
-            # print(tb1.get_string(title=title))
+        tb1.horizontal_char = '*'
         tbStr = '<pre>' + tb1.get_string(title=title) + '</pre>'
 
         # 測試用這個 
