@@ -25,10 +25,10 @@ def sendThree():
                 tb1.add_row([dataCol_1, dataCol_2])
             else:
                 name = data[0].replace("(", "").replace(")", "");
-                dataCol_1 = name[0:7]
+                dataCol_1 = name[0:5]
                 dataCol_2 = data[3]
-                totalBuy = data[1]
-                totalSell = data[2]
+                totalBuy = data[1].replace("+", "").replace("-", "");
+                totalSell = data[2].replace("+", "").replace("-", "");
                 tb1.add_row(['***********','***********'])
                 tb1.add_row(['Total Buy','Total Sell'])
                 tb1.add_row([totalBuy,totalSell])
