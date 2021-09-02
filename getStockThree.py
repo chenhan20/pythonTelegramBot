@@ -29,14 +29,19 @@ def getHolding():
 
 
 def converterNumber(num):
-    numberLength = len(str(num))
+    prefix = '+';
+    if(num<0):
+        prefix = '-'
+    absNum = abs(num)
+    numberLength = len(str(absNum))
     converterNumber = num
     if(numberLength > 12):
-        converterNumber = str(round(num / 1000000000000, 2)) + '兆'
+        converterNumber = str(round(absNum / 1000000000000, 2)) + '兆'
     elif(numberLength > 8 and numberLength <= 12):
-        converterNumber = str(round(num / 100000000, 2)) + '億'
+        converterNumber = str(round(absNum / 100000000, 2)) + '億'
     elif(numberLength > 4 and numberLength <= 8):
-        converterNumber = str(round(num / 10000, 2)) + '萬'
+        converterNumber = str(round(absNum / 10000, 2)) + '萬'
+    converterNumber = prefix + converterNumber
     return converterNumber
 
 
@@ -144,7 +149,7 @@ def getStockDayDetail(dateStr):
 
 
 def test():
-    print('test')
+    converterNumber(1123456789999)
 
 if __name__ == '__main__':
     test()
