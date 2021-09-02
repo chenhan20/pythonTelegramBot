@@ -38,11 +38,11 @@ def sendThree():
         tbStr = title +'\n<pre>' + tb1.get_string() + '</pre>'
 
         # 測試用這個 
-        telegramBot.newSendMessage(tbStr, '919045167')
+        # telegramBot.newSendMessage(tbStr, '919045167')
 
-        # telegramIds = getDb.getTelegramIds()
-        # for id in telegramIds:
-        #     telegramBot.newSendMessage(tbStr, id)
+        telegramIds = getDb.getTelegramIds()
+        for id in telegramIds:
+            telegramBot.newSendMessage(tbStr, id)
             
     else:
         print(dateStr + '查無資料')
