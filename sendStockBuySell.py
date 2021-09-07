@@ -33,7 +33,10 @@ def getDayStockThreeBuySell():
         converterBuySellList('****賣超****', overSellList, tb1)
         converterBuySellList('****無變化****', noneList, tb1)
         tbStr = title +'<pre>' + tb1.get_string() + '</pre>'
-        telegramBot.sendMessage(tbStr)
+        telegramIds = getDb.getTelegramIds()
+        for id in telegramIds:
+            telegramBot.newSendMessage(tbStr, id)
+        # telegramBot.sendMessage(tbStr)
     else:
         print(dateStr + '查無資料')
     
@@ -46,6 +49,7 @@ def converterBuySellList(title, stockList, tb1):
             stockName = stockName.replace(' ','')
             buySell = converterNumber(stock[18])
             buySellText = '<b>' + buySell + '張</b>'
+            buySellText = buySellText.replace(' ','')
             tb1.add_row([stockName, buySellText])
 
 
