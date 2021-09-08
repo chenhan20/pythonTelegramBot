@@ -1,6 +1,7 @@
 import getStockThree as three
 import datetime
 import telegramBot
+import getDb
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
@@ -29,10 +30,43 @@ def sendStockDayPrice():
         sendStr = sendStr + converterStockList('-📈📈📈漲📈📈📈- ', upList)
         sendStr = sendStr + converterStockList('-〽〽〽跌〽〽〽- ', downList)
         sendStr = sendStr + converterStockList('-💨💨無變化💨💨- ', noneList)
-        telegramBot.sendMessage(sendStr)
+
+        telegramIds = getDb.getTelegramIds()
+        for id in telegramIds:
+            telegramBot.newSendMessage(sendStr, id)
+        # telegramBot.sendMessage(sendStr)
     else:
         print(dateStr + '查無資料')
 
+def sendStockDayPriceForUser():
+    userData = getDb.getUserDetail()
+    
+    # stockDayData = three.getStockDayDetail(dateStr)
+    # stockPriceList = stockDayData['stockPriceLsit']
+    # dayList = stockDayData['dayList']
+    # upDown = stockDayData['upDown']
+    # if(len(stockPriceList) != 0):
+    #     upList = []
+    #     downList = []
+    #     noneList = []
+    #     sendStr = dateStr + '收盤資訊\n'
+    #     for stock in stockPriceList:
+    #         prefix = stock[9]
+    #         if(prefix == '<p style= color:red>+</p>'):
+    #             upList.append(stock)
+    #         elif(prefix == '<p style= color:green>-</p>'):
+    #             downList.append(stock)
+    #         else:
+    #             noneList.append(stock)
+
+    #     sendStr = sendStr + converterDayList(dayList)
+    #     sendStr = sendStr + converterupDown(upDown)
+    #     sendStr = sendStr + converterStockList('-📈📈📈漲📈📈📈- ', upList)
+    #     sendStr = sendStr + converterStockList('-〽〽〽跌〽〽〽- ', downList)
+    #     sendStr = sendStr + converterStockList('-💨💨無變化💨💨- ', noneList)
+    #     telegramBot.sendMessage(sendStr)
+    # else:
+    #     print(dateStr + '查無資料')
 
 def converterPrefix(prefix):
     converterPrefix = ''
@@ -83,4 +117,5 @@ def converterupDown(upDown):
 
 
 if __name__ == '__main__':
-    sendStockDayPrice()
+    sendStockDayPrice();
+    # sendStockDayPriceForUser();
