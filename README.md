@@ -2,7 +2,12 @@
 
 ### python Telegram Bot
 
-__功能:發送每日收盤資訊(個股收盤價、三大法人買賣超、三大法人個股買賣超)
+#### 已完成功能
+* bot 註冊(將資訊存入DB 並每日抓取發送) 
+* 發送每日收盤資訊(個股收盤價、三大法人買賣超、三大法人個股買賣超)
+#### 未完成功能
+* 根據不同USER 發送不同追蹤的股票資訊
+
 
 ```bash
 pip install python-telegram-bot --upgrade
@@ -53,6 +58,10 @@ heroku Scheduled
 | sendThree.py  | 三大法人買賣超  | 設定下午三點  | 
 | sendStockBuySell.py  |  三大法人個股買賣超 | 設定下午四點半  |
 
+
+### 參考資料
+
+- telebot教學影片[https://youtu.be/NwBWW8cNCP4]
 
  ```sql
 INSERT INTO public.follow_stock(user_id,stock_code)
