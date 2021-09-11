@@ -38,8 +38,8 @@ def sendStockDayPrice():
     else:
         print(dateStr + '查無資料')
 
-def sendStockDayPriceForUser():
-    userData = getDb.getUserDetail()
+# def sendStockDayPriceForUser():
+#     userData = getDb.getUserDetail()
     
     # stockDayData = three.getStockDayDetail(dateStr)
     # stockPriceList = stockDayData['stockPriceLsit']
