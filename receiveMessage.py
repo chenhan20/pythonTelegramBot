@@ -14,14 +14,14 @@ chatIdList = [919045167]  # 要放送給誰 之後要抓DB(account.telegram_user
 def start (message):
     fromUser = message.from_user
     print(fromUser)
-    bot.reply_to(message,  str.format("Hi! {}歡迎你使用SteveBot 服務 \n今日起將會收到股市資訊 若不想在收到 請輸入/end", fromUser.username))
+    bot.reply_to(message,  str.format("Hi! {}歡迎你使用SteveBot 服務 \n今日起將會收到股市資訊 若不想在收到 請輸入/end", fromUser.first_name))
     getDb.addUser(fromUser)
 
 @bot.message_handler(commands=['end'])
 def start (message):
     fromUser = message.from_user
     print(fromUser)
-    bot.reply_to(message,  str.format("Hi! {}已暫停訂閱通知 若想在收到 請輸入/start", fromUser.username))
+    bot.reply_to(message,  str.format("Hi! {}已暫停訂閱通知 若想在收到 請輸入/start", fromUser.first_name))
     getDb.removeUser(fromUser)
 
 if __name__ == '__main__':

@@ -102,7 +102,7 @@ def addUser(fromUser):
             print('new accounts')
             sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled)' 
             sql += ' VALUES (%s, now(), now(), %s, true)'
-            cur.execute(sql, (fromUser.username, fromUser.id))
+            cur.execute(sql, (fromUser.first_name, fromUser.id))
         else:
             print('old accounts')
             sql = 'UPDATE accounts SET telegram_push_enabled = True, last_login = now() WHERE telegram_user_id = (%s)' 
