@@ -61,7 +61,11 @@ heroku Scheduled
 
 ### 參考資料
 
-- telebot教學影片(https://youtu.be/NwBWW8cNCP4)
+- [telebot教學影片](https://youtu.be/NwBWW8cNCP4)
+```
+在裡面看到可以使用這種方法攔截接收訊息 就不用再做一個webhook了
+@bot.message_handler(commands=['start'])
+```
 
 
 ### Table語法
