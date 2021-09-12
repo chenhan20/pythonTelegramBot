@@ -61,8 +61,10 @@ heroku Scheduled
 
 ### 參考資料
 
-- telebot教學影片[https://youtu.be/NwBWW8cNCP4]
+- telebot教學影片(https://youtu.be/NwBWW8cNCP4)
 
+
+### Table語法
  ```sql
 INSERT INTO public.follow_stock(user_id,stock_code)
 VALUES 
