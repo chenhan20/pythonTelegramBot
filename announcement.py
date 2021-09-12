@@ -1,12 +1,14 @@
 import telegramBot
 import getDb
 
-def announcement():
-    announcementStr = '新增了訂閱功能輸入\n /start 開始訂閱 /end 結束訂閱 請有需要的用戶輸入/start'
+def send(str):
+    # announcementStr = 'https://scontent-tpe1-1.xx.fbcdn.net/v/t1.6435-9/p843x403/241166647_10215683700765483_5680142497233979819_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=825194&_nc_ohc=0AkAabSuzGkAX8zGYWu&_nc_ht=scontent-tpe1-1.xx&oh=89244fcc75066b3752e88216db72d881&oe=61626121'
     telegramIds = getDb.getTelegramIds()
+    # telegramIds = ['1471601802', '1888409915', '1695874598', '1900252524','1918213496', '919045167']
+    # telegramIds = ['919045167']
     for id in telegramIds:
-        telegramBot.newSendMessage(announcementStr, id)
+        telegramBot.newSendMessage(str, id)
 
 
 if __name__ == '__main__':
-    announcement()
+    send('123')
