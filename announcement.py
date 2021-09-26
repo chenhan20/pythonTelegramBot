@@ -6,9 +6,10 @@ def send(str):
     telegramIds = getDb.getTelegramIds()
     # telegramIds = ['1471601802', '1888409915', '1695874598', '1900252524','1918213496', '919045167']
     # telegramIds = ['919045167']
+    str = '<b>推播訊息</b>:\n' + str
     for id in telegramIds:
-        telegramBot.newSendMessage(str, id)
+        telegramBot.newSendAnnouncementMessage(str, id)
 
 
 if __name__ == '__main__':
-    send('123')
+    send('https://news.cnyes.com/news/id/4730000')

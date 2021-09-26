@@ -29,6 +29,10 @@ def newSendMessage(msg, telegramId):
     bot.sendMessage(telegramId, msg, parse_mode='html',
             disable_web_page_preview=True)
 
+def newSendAnnouncementMessage(msg, telegramId):
+    bot.sendMessage(telegramId, msg, parse_mode='html',
+            disable_web_page_preview=False)
+
 def sendImage(image):
     for chat_id in chatIdList:
         bot.send_photo(chat_id=chat_id, photo=image)
