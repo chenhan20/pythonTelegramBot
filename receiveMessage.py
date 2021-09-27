@@ -47,4 +47,5 @@ def test (message):
     bot.send_message(message.from_user.id, "Choose one letter:", reply_markup=markup)
 
 if __name__ == '__main__':
+    print('機器人已啟動')
     bot.polling()
