@@ -32,6 +32,13 @@ def sendAnnouncement (message):
         announcementText = message.text.replace('/announcement ', '')
         announcement.send(announcementText)
 
+@bot.message_handler(func=lambda m: True)
+def echo_all(message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    # TODO 預計要存到messageRecord table 紀錄訊息
+	# bot.reply_to(message, message.text)
+
 # 手機板可以看到下方會有框可以選 之後來看要怎樣應用
 @bot.message_handler(commands=['test'])
 def test (message):
