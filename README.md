@@ -58,11 +58,34 @@ databaseUrl = os.environ['DATABASE_URL']
 
 heroku Scheduled 
 *是使用UTC時間 記得要轉換*  
-| name | 說明  | 時間 | 
-|---|---|---|
-| sendStockDayPrice.py  | 個股收盤價  | 設定下午兩點  | 
-| sendThree.py  | 三大法人買賣超  | 設定下午三點  | 
-| sendStockBuySell.py  |  三大法人個股買賣超 | 設定下午四點半  |
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fileName</th>
+      <th>Schedule說明</th>
+      <th>執行時間</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>sendStockDayPrice.py</th>
+      <td>個股收盤價</td>
+      <td>每天14:00</td>
+    </tr>
+    <tr>
+      <th>sendThree.py</th>
+      <td> 三大法人買賣超</td>
+      <td>每天15:00</td>
+    </tr>
+    <tr>
+      <th>sendStockBuySell.py</th>
+      <td>三大法人個股買賣超</td>
+      <td>每天16:30</td>
+    </tr>
+  </tbody>
+</table>
+
 
 
 ### 參考資料
