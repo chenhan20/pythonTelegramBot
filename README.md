@@ -69,17 +69,17 @@ heroku Scheduled
   </thead>
   <tbody>
     <tr>
-      <th>sendStockDayPrice.py</th>
+      <td>sendStockDayPrice.py</td>
       <td>個股收盤價</td>
       <td>每天14:00</td>
     </tr>
     <tr>
-      <th>sendThree.py</th>
+      <td>sendThree.py</td>
       <td> 三大法人買賣超</td>
       <td>每天15:00</td>
     </tr>
     <tr>
-      <th>sendStockBuySell.py</th>
+      <td>sendStockBuySell.py</td>
       <td>三大法人個股買賣超</td>
       <td>每天16:30</td>
     </tr>
