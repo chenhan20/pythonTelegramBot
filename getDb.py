@@ -51,6 +51,46 @@ def getTelegramIds():
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
 
+# 台股有訂閱的ID
+def getTwTelegramIds():
+    try:
+            
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        print("Opened database successfully")
+        cur = conn.cursor()
+        postgreSQL_select_Query = "select * from accounts where telegram_push_tw_enabled = true "
+        cur.execute(postgreSQL_select_Query)
+
+        rows = cur.fetchall()
+        ids = [];
+        for row in rows:
+            ids.append(row[4])
+            
+        return ids
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
+# 美股有訂閱的ID
+def getUsTelegramIds():
+    try:
+            
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        print("Opened database successfully")
+        cur = conn.cursor()
+        postgreSQL_select_Query = "select * from accounts where telegram_push_us_enabled = true "
+        cur.execute(postgreSQL_select_Query)
+
+        rows = cur.fetchall()
+        ids = [];
+        for row in rows:
+            ids.append(row[4])
+            
+        return ids
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
 def getAccount(userId):
     try:
         conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
@@ -99,12 +139,12 @@ def addUser(fromUser):
         cur = conn.cursor()
         if(len(account) == 0 ):
             print('new accounts')
-            sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled)' 
-            sql += ' VALUES (%s, now(), now(), %s, true)'
+            sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled, telegram_push_tw_enabled, telegram_push_us_enabled)' 
+            sql += ' VALUES (%s, now(), now(), %s, true, true, true)'
             cur.execute(sql, (fromUser.first_name, fromUser.id))
         else:
             print('old accounts')
-            sql = 'UPDATE accounts SET telegram_push_enabled = True, last_login = now() WHERE telegram_user_id = (%s)' 
+            sql = 'UPDATE accounts SET telegram_push_enabled = True, telegram_push_tw_enabled = True, telegram_push_us_enabled = True, last_login = now() WHERE telegram_user_id = (%s)' 
             cur.execute(sql, (str(fromUser.id),))
 
         conn.commit()       
@@ -117,20 +157,58 @@ def removeUser(fromUser):
     try:
         conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
         cur = conn.cursor()
-        sql = 'UPDATE accounts SET telegram_push_enabled = False, last_login = now() WHERE telegram_user_id = (%s)' 
+        sql = 'UPDATE accounts SET telegram_push_enabled = False, telegram_push_tw_enabled = False, telegram_push_us_enabled = False, last_login = now() WHERE telegram_user_id = (%s)' 
         cur.execute(sql, (str(fromUser.id),))
-
         conn.commit()       
 
     except Exception as error:
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
 
+def enabledTw(fromUser, enabled):
+    try:
+        account = getAccount(fromUser.id)
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        cur = conn.cursor()
+        if(len(account) == 0 ):
+            print('new accounts')
+            sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled, telegram_push_tw_enabled, telegram_push_us_enabled)' 
+            sql += ' VALUES (%s, now(), now(), %s, true, true, true)'
+            cur.execute(sql, (fromUser.first_name, fromUser.id))
+        else:
+            print('old accounts')
+            sql = 'UPDATE accounts SET telegram_push_tw_enabled = %s, last_login = now() WHERE telegram_user_id = (%s)' 
+            cur.execute(sql, (enabled, str(fromUser.id),))
+        conn.commit()       
 
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
+def enabledUs(fromUser, enabled):
+    try:
+        account = getAccount(fromUser.id)
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        cur = conn.cursor()
+        if(len(account) == 0 ):
+            print('new accounts')
+            sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled, telegram_push_tw_enabled, telegram_push_us_enabled)' 
+            sql += ' VALUES (%s, now(), now(), %s, true, true, true)'
+            cur.execute(sql, (fromUser.first_name, fromUser.id))
+        else:
+            print('old accounts')
+            sql = 'UPDATE accounts SET telegram_push_us_enabled = %s, last_login = now() WHERE telegram_user_id = (%s)' 
+            cur.execute(sql, (enabled, str(fromUser.id),))
+        conn.commit()       
+
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
 
 def getDb():
     # print(getFollowStock(1))
-    print(getTelegramIds())
+    # print(getTelegramIds())
+    print(getTwTelegramIds())
     # print(getAccount())
 
 if __name__ == '__main__':

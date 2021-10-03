@@ -32,7 +32,7 @@ def sendFred():
         # 測試用這個 
         # telegramBot.newSendMessage(tbStr, '919045167')
 
-        telegramIds = getDb.getTelegramIds()
+        telegramIds = getDb.getUsTelegramIds()
         for id in telegramIds:
             telegramBot.newSendMessage(tbStr, id)
             

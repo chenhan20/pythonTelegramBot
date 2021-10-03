@@ -14,17 +14,45 @@ bot = telebot.TeleBot(token)
 @bot.message_handler(commands=['start'])
 def start (message):
     fromUser = message.from_user
-    print(fromUser)
-    bot.reply_to(message,  str.format("Hi! {}歡迎你使用SteveBot 服務 \n今日起將會收到股市資訊 若不想在收到 請輸入/end", fromUser.first_name))
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Hi! {}歡迎你使用SteveBot 服務 \n今日起將會收到全球股市資訊 若不想在收到 請輸入\n/end", fromUser.first_name))
     getDb.addUser(fromUser)
 
 @bot.message_handler(commands=['end'])
 def end (message):
     fromUser = message.from_user
-    print(fromUser)
-    bot.reply_to(message,  str.format("Hi! {}已暫停訂閱通知 若想在收到 請輸入/start", fromUser.first_name))
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Thank! {} 感謝你的使用 已暫停所有訂閱通知 若想在收到 請輸入\n/start 或是個別訂閱", fromUser.first_name))
     getDb.removeUser(fromUser)
 
+@bot.message_handler(commands=['startTW'])
+def start (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Hi! {} \n今日起將會收到台股資訊 若不想在收到 請輸入\n/endTW", fromUser.first_name))
+    getDb.enabledTw(fromUser, True)
+
+@bot.message_handler(commands=['endTW'])
+def end (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Thank you! {} 感謝你的使用 已暫停台股訂閱通知 若想在收到 請輸入\n/startTW 或是全部訂閱/start", fromUser.first_name))
+    getDb.enabledTw(fromUser, False)
+
+@bot.message_handler(commands=['startUS'])
+def start (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Hi! {} \n今日起將會收到美股資訊 若不想在收到 請輸入\n/endUS", fromUser.first_name))
+    getDb.enabledUs(fromUser, True)
+
+@bot.message_handler(commands=['endUS'])
+def end (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Thank you! {} 感謝你的使用 已暫停美股訂閱通知 若想在收到 請輸入\n/startUS 或是全部訂閱\n/start", fromUser.first_name))
+    getDb.enabledUs(fromUser, False)
+    
 @bot.message_handler(commands=['announcement'])
 def sendAnnouncement (message):
     fromUser = message.from_user

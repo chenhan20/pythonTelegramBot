@@ -31,7 +31,7 @@ def sendStockDayPrice():
         sendStr = sendStr + converterStockList('-〽〽〽跌〽〽〽- ', downList)
         sendStr = sendStr + converterStockList('-💨💨無變化💨💨- ', noneList)
 
-        telegramIds = getDb.getTelegramIds()
+        telegramIds = getDb.getTwTelegramIds()
         for id in telegramIds:
             telegramBot.newSendMessage(sendStr, id)
         # telegramBot.sendMessage(sendStr)
