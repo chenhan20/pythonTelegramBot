@@ -12,7 +12,6 @@ password = config['DEFAULT']['PASSWORD']
 host = config['DEFAULT']['HOST']
 port = config['DEFAULT']['PORT']
 
-
 def getFollowStock(userId):
     try:
         conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
@@ -131,8 +130,8 @@ def removeUser(fromUser):
 
 def getDb():
     # print(getFollowStock(1))
-    # print(getTelegramIds())
-    print(getAccount())
+    print(getTelegramIds())
+    # print(getAccount())
 
 if __name__ == '__main__':
     getDb()
