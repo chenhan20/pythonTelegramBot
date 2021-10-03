@@ -4,8 +4,8 @@ import telegramBot
 import getDb
 import prettytable as pt
 
-# yesterdayDate = date.today()  - timedelta(days=1)
-yesterdayDate = '2021-10-01'
+yesterdayDate = date.today()  - timedelta(days=1)
+# yesterdayDate = '2021-10-01'
 
 def sendFred():
     fredData = fredApi.getFredAPI(yesterdayDate)
@@ -28,11 +28,11 @@ def sendFred():
         tbStr = '<b>' +  title +'</b>\n<pre>' + tb1.get_string() + '</pre>'
 
         # 測試用這個 
-        telegramBot.newSendMessage(tbStr, '919045167')
+        # telegramBot.newSendMessage(tbStr, '919045167')
 
-        # telegramIds = getDb.getTelegramIds()
-        # for id in telegramIds:
-        #     telegramBot.newSendMessage(tbStr, id)
+        telegramIds = getDb.getTelegramIds()
+        for id in telegramIds:
+            telegramBot.newSendMessage(tbStr, id)
             
     else:
         print(str(yesterdayDate) + '查無資料')

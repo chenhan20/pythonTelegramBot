@@ -6,10 +6,10 @@ config.sections()
 config.read('setting.ini')
 
 
-token = config['DEFAULT']['FRED_API_KEY']
+fredToken = config['DEFAULT']['FRED_API_KEY']
 
 def getFredAPI(date):
-    fred = Fred(api_key=token)  # 替換成輸入你的api key
+    fred = Fred(api_key=fredToken)  # 替換成輸入你的api key
     #那斯達克少一天資料== 不知道為啥
     #邏輯 當天早上八點跑 now.date - 1天 去抓資料 抓地到就發 抓不到就不發 暫時先醬
     watchList = ['SP500','DJIA','NASDAQCOM']
