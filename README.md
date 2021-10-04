@@ -121,6 +121,8 @@ VALUES
     (1, '2615');
 );
 
+INSERT INTO public.system_parameter(name,value,update_on)
+VALUES ('LAST_FRED_SEND_DATE', '0', now())
  ```
 
 ### 尚未解決問題

@@ -205,11 +205,42 @@ def enabledUs(fromUser, enabled):
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
 
+
+def getLastSendDate(sendType):
+    try:
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        print("Opened database successfully")
+        cur = conn.cursor()
+        postgreSQL_select_Query = "select * from system_parameter where name = %s"
+        cur.execute(postgreSQL_select_Query, (sendType,))
+        rows = cur.fetchall()
+        value = ''
+        for row in rows:
+            value = row[2]
+            
+        return value
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
+
+def updateLastSendDate(lastSendDate,sendType):
+    try:
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        cur = conn.cursor()
+        sql = 'UPDATE system_parameter SET value = %s, update_on = now() WHERE name = (%s)' 
+        cur.execute(sql, (lastSendDate, str(sendType),))
+        conn.commit()       
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
 def getDb():
     # print(getFollowStock(1))
     # print(getTelegramIds())
-    print(getTwTelegramIds())
+    # print(getTwTelegramIds())
     # print(getAccount())
+    print(getLastSendDate('LAST_FRED_SEND_DATE'))
 
 if __name__ == '__main__':
     getDb()
