@@ -9,24 +9,23 @@ yesterdayDate = date.today()  - timedelta(days=1)
 # yesterdayDate = datetime.date(2021, 10, 2) - timedelta(days=1)
 
 def sendFred():
-    fredData = fredApi.getFredAPI(yesterdayDate)
+    fredData = fredApi.getFredAPI()
     tb1 = pt.PrettyTable()
     tb1.set_style(pt.PLAIN_COLUMNS)
     title = str(yesterdayDate) + '美股指數收盤價'
     
     if(len(fredData) != 0):
-        print(fredData)
-        col1 = '指數名稱'
+        col1 = '指數名稱(收盤)'
         col2 = '昨收'
         tb1.field_names = [col1,col2]
         tb1.align[col1] = "l"
-        tb1.align[col2] = "r"
+        tb1.align[col2] = "l"
         for data in fredData:
-            indexTitle = data['title']
+            indexTitle = data['title'][:6]
             indexValue = data['value'] + '(' +  data['percent'] + ')'
-            tb1.add_row([indexTitle, indexValue])
+            tb1.add_row([indexTitle , indexValue])
 
-        tbStr = '<b>' +  title +'</b>\n<pre>' + tb1.get_string() + '</pre>'
+        tbStr = '<b>' +  title +'</b>\n' + tb1.get_string() + ''
 
         # print(tbStr)
         # 測試用這個 
