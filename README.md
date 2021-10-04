@@ -88,6 +88,11 @@ heroku Scheduled
       <td>三大法人個股買賣超</td>
       <td>每天16:30</td>
     </tr>
+    <tr>
+      <td>sendFred.py</td>
+      <td>美股三大指數收盤</td>
+      <td>每天08:30</td>
+    </tr>
   </tbody>
 </table>
 
