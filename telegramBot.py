@@ -4,7 +4,7 @@ import getStockThree as three
 import datetime
 import time
 import pandas as pd
-import dataframe_image as dfi
+# import dataframe_image as dfi
 import sys
 
 config = configparser.ConfigParser()

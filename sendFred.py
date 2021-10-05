@@ -25,7 +25,6 @@ def sendFred():
             tb1.add_row([indexTitle , indexValue])
 
         tbStr = '<b>' +  title +'</b>\n' + tb1.get_string() + ''
-        getDb.updateLastSendDate(fredData[0]['lastUpdateDate'], 'LAST_FRED_SEND_DATE')
         # print(tbStr)
         # 測試用這個 
         # telegramBot.newSendMessage(tbStr, '919045167')
@@ -34,6 +33,7 @@ def sendFred():
         for id in telegramIds:
             telegramBot.newSendMessage(tbStr, id)
             
+        getDb.updateLastSendDate(fredData[0]['lastUpdateDate'], 'LAST_FRED_SEND_DATE')
     else:
         print('已發送過')
 

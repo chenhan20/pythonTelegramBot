@@ -12,7 +12,8 @@ fredToken = config['DEFAULT']['FRED_API_KEY']
 
 def getFredAPI():
     fred = Fred(api_key=fredToken) 
-    watchList = ['SP500','DJIA','NASDAQCOM']
+    #'NASDAQCOM' 更新時間太慢 暫時不發
+    watchList = ['SP500','DJIA']
     resultList = []
     for watch in watchList:
         result = dict()
