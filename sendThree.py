@@ -3,10 +3,15 @@ import datetime
 import telegramBot
 import getDb
 import prettytable as pt
+import time
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
-
-def sendThree():
+# 初始次數
+executionsCount = 0
+# 最多call五次(30分鐘) 都沒資料就不發了
+maxExecutionsCount = 5
+def sendThree(count):
+    count = count + 1
     threeData = three.getThree(dateStr)
     tb1 = pt.PrettyTable()
     tb1.set_style(pt.PLAIN_COLUMNS)
@@ -43,10 +48,13 @@ def sendThree():
         telegramIds = getDb.getTwTelegramIds()
         for id in telegramIds:
             telegramBot.newSendMessage(tbStr, id)
-            
     else:
         print(dateStr + '查無資料')
+        if(count < maxExecutionsCount):
+            time.sleep(300)
+            sendThree(count)
 
         
 if __name__ == '__main__':
-    sendThree()
+    sendThree(executionsCount)
+    

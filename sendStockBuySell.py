@@ -3,11 +3,16 @@ import datetime
 import telegramBot
 import getDb
 import prettytable as pt
+import time
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
+# 初始次數
+executionsCount = 0
+# 最多call五次(30分鐘) 都沒資料就不發了
+maxExecutionsCount = 5
 
-
-def getDayStockThreeBuySell():
+def getDayStockThreeBuySell(count):
+    count = count + 1
     threeStockList = three.getDayStockThreeBuySell(dateStr)
     if(len(threeStockList) != 0):
         tb1 = pt.PrettyTable()  
@@ -35,9 +40,11 @@ def getDayStockThreeBuySell():
         telegramIds = getDb.getTwTelegramIds()
         for id in telegramIds:
             telegramBot.newSendMessage(tbStr, id)
-        # telegramBot.sendMessage(tbStr)
     else:
         print(dateStr + '查無資料')
+        if(count < maxExecutionsCount):
+            time.sleep(300)
+            getDayStockThreeBuySell(count)
     
 
 def converterBuySellList(title, stockList, tb1):
@@ -65,4 +72,4 @@ def converterNumber(number):
 
 
 if __name__ == '__main__':
-    getDayStockThreeBuySell()
+    getDayStockThreeBuySell(executionsCount)
