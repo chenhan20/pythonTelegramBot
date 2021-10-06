@@ -32,6 +32,13 @@ def getFredAPI():
 
     return resultList    
 
+def getFredData(name):
+    fred = Fred(api_key=fredToken) 
+    watchLastInfo = fred.get_series_info(name)
+    watchLastIndex = fred.get_series(name).tail(2)
+    print(watchLastInfo)
+    print(watchLastIndex)
+
 def converterPrefix(percent):
     converterPercent = str(percent).replace('+','').replace('-','')
     converterValue = ''
@@ -45,3 +52,5 @@ def converterPrefix(percent):
 
 if __name__ == '__main__':
     print(getFredAPI())
+    print(getFredData('SP500'))
+    print(getFredData('NASDAQCOM'))

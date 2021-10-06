@@ -21,7 +21,7 @@ def sendFred():
         tb1.align[col2] = "l"
         for data in fredData:
             indexTitle = data['title'][:6]
-            indexValue = data['value'] +  data['indexGap'] + '(' + data['gapPercent'] + ')'
+            indexValue = data['value'] + '('+  data['indexGap'] + ' | ' +  data['gapPercent'] + ')'
             tb1.add_row([indexTitle , indexValue])
 
         tbStr = '<b>' +  title +'</b>\n' + tb1.get_string() + ''
