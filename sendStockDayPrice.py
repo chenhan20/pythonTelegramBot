@@ -2,11 +2,15 @@ import getStockThree as three
 import datetime
 import telegramBot
 import getDb
+import time
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
-
-
-def sendStockDayPrice():
+# 初始次數
+executionsCount = 0
+# 最多call五次(30分鐘) 都沒資料就不發了
+maxExecutionsCount = 5
+def sendStockDayPrice(count):
+    count = count + 1
     stockDayData = three.getStockDayDetail(dateStr)
     stockPriceList = stockDayData['stockPriceLsit']
     dayList = stockDayData['dayList']
@@ -37,6 +41,9 @@ def sendStockDayPrice():
         # telegramBot.sendMessage(sendStr)
     else:
         print(dateStr + '查無資料')
+        if(count < maxExecutionsCount):
+            time.sleep(300)
+            sendStockDayPrice(count)
 
 # def sendStockDayPriceForUser():
 #     userData = getDb.getUserDetail()
@@ -117,5 +124,5 @@ def converterupDown(upDown):
 
 
 if __name__ == '__main__':
-    sendStockDayPrice();
+    sendStockDayPrice(executionsCount);
     # sendStockDayPriceForUser();
