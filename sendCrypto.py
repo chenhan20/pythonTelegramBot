@@ -5,21 +5,21 @@ import telegramBot
 import getDb
 import prettytable as pt
 
-def sendYfinance():
-    fredData = yFinanceApi.getYfIndexData()
-    lastSendDate = getDb.getLastSendDate('LAST_US_MARKET_SEND_DATE')
-    newUpdateDate = fredData[0]['lastUpdateDate']
+def sendCrypto():
+    cryptoData = yFinanceApi.getCryptoData()
+    lastSendDate = getDb.getLastSendDate('LAST_CRYPTO_SEND_DATE')
+    newUpdateDate = cryptoData[0]['lastUpdateDate']
     tb1 = pt.PrettyTable()
     tb1.set_style(pt.PLAIN_COLUMNS)
     
     if(lastSendDate != newUpdateDate):
-        title = str(newUpdateDate) + '美股指數收盤價'
-        col1 = '指數名稱'
-        col2 = '昨收'
+        title = str(newUpdateDate) + '加密貨幣價格'
+        col1 = '貨幣名稱'
+        col2 = '價格'
         tb1.field_names = [col1,col2]
         tb1.align[col1] = "l"
         tb1.align[col2] = "l"
-        for data in fredData:
+        for data in cryptoData:
             indexTitle = data['title'][:6]
             indexValue = data['value'] + '('+  data['indexGap'] + ' | ' +  data['gapPercent'] + ')'
             tb1.add_row([indexTitle , indexValue])
@@ -29,11 +29,11 @@ def sendYfinance():
         # 測試用這個 
         # telegramBot.newSendMessage(tbStr, '919045167')
 
-        telegramIds = getDb.getUsTelegramIds()
+        telegramIds = getDb.getCryptoTelegramIds()
         for id in telegramIds:
             telegramBot.newSendMessage(tbStr, id)
 
-        getDb.updateLastSendDate(fredData[0]['lastUpdateDate'], 'LAST_US_MARKET_SEND_DATE')
+        getDb.updateLastSendDate(cryptoData[0]['lastUpdateDate'], 'LAST_CRYPTO_SEND_DATE')
   
 
 
@@ -42,4 +42,4 @@ def sendYfinance():
 
         
 if __name__ == '__main__':
-    sendYfinance()
+    sendCrypto()

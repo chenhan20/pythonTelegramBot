@@ -122,7 +122,10 @@ VALUES
 );
 
 INSERT INTO public.system_parameter(name,value,update_on)
-VALUES ('LAST_FRED_SEND_DATE', '0', now())
+VALUES ('LAST_FRED_SEND_DATE', '0', now()) 
+,('LAST_US_MARKET_SEND_DATE', '0', now())
+,('LAST_CRYPTO_SEND_DATE', '0', now())
+
  ```
 
 ### 尚未解決問題

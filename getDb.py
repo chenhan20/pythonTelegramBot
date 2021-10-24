@@ -91,6 +91,26 @@ def getUsTelegramIds():
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
 
+# 加密貨幣有訂閱的ID
+def getCryptoTelegramIds():
+    try:
+            
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        print("Opened database successfully")
+        cur = conn.cursor()
+        postgreSQL_select_Query = "select * from accounts where telegram_push_crypto_enabled = true "
+        cur.execute(postgreSQL_select_Query)
+
+        rows = cur.fetchall()
+        ids = [];
+        for row in rows:
+            ids.append(row[4])
+            
+        return ids
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
 def getAccount(userId):
     try:
         conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
