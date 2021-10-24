@@ -52,6 +52,20 @@ def end (message):
     print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
     bot.reply_to(message,  str.format("Thank you! {} 感謝你的使用 已暫停美股訂閱通知 若想在收到 請輸入\n/startUS 或是全部訂閱\n/start", fromUser.first_name))
     getDb.enabledUs(fromUser, False)
+
+@bot.message_handler(commands=['startCrypto'])
+def start (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Hi! {} \n今日起將會收到加密貨幣資訊 若不想在收到 請輸入\n/endCrypto", fromUser.first_name))
+    getDb.enabledCrypto(fromUser, True)
+
+@bot.message_handler(commands=['endCrypto'])
+def end (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Thank you! {} 感謝你的使用 已暫停加密貨幣訂閱通知 若想在收到 請輸入\n/startCrypto 或是全部訂閱\n/start", fromUser.first_name))
+    getDb.enabledCrypto(fromUser, False)
     
 @bot.message_handler(commands=['announcement'])
 def sendAnnouncement (message):
