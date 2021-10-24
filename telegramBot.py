@@ -19,19 +19,31 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 
 def sendMessage(msg):
-    for chat_id in chatIdList:
-        print(msg)
-        bot.sendMessage(chat_id, msg, parse_mode='html',
-                        disable_web_page_preview=True)
+    try:
+        for chat_id in chatIdList:
+            print(msg)
+            bot.sendMessage(chat_id, msg, parse_mode='html',
+                            disable_web_page_preview=True)
+    except Exception as error:
+        print ("發送失敗 Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
 
 def newSendMessage(msg, telegramId):
-    print('ID:'  + telegramId + 'msg:' + msg)
-    bot.sendMessage(telegramId, msg, parse_mode='html',
-            disable_web_page_preview=True)
+    try:
+        print('ID:'  + telegramId + 'msg:' + msg)
+        bot.sendMessage(telegramId, msg, parse_mode='html',
+                disable_web_page_preview=True)
+    except Exception as error:
+        print ("發送失敗 Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
 
 def newSendAnnouncementMessage(msg, telegramId):
-    bot.sendMessage(telegramId, msg, parse_mode='html',
-            disable_web_page_preview=False)
+    try:
+        bot.sendMessage(telegramId, msg, parse_mode='html',
+                disable_web_page_preview=False)
+    except Exception as error:
+        print ("發送失敗 Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
 
 def sendImage(image):
     for chat_id in chatIdList:
