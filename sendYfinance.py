@@ -27,11 +27,11 @@ def sendYfinance():
         tbStr = '<b>' +  title +'</b>\n' + tb1.get_string() + ''
         # print(tbStr)
         # 測試用這個 
-        telegramBot.newSendMessage(tbStr, '1471601802')
+        # telegramBot.newSendMessage(tbStr, '919045167')
 
-        # telegramIds = getDb.getUsTelegramIds()
-        # for id in telegramIds:
-        #     telegramBot.newSendMessage(tbStr, id)
+        telegramIds = getDb.getUsTelegramIds()
+        for id in telegramIds:
+            telegramBot.newSendMessage(tbStr, id)
 
         getDb.updateLastSendDate(fredData[0]['lastUpdateDate'], 'LAST_FRED_SEND_DATE')
   
