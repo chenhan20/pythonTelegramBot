@@ -60,7 +60,7 @@ def getCryptoData():
         result['indexGap'] = converterPrefix(indexGap)
         converterPercent = str(percent).replace('+','').replace('-','')
         result['gapPercent'] = converterPercent + '%'
-        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:18] 
+        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10] 
         resultList.append(result)
 
     return resultList
