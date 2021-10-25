@@ -21,7 +21,7 @@ indexList = [
 
 def getYfIndexData():
     # stocks = ['SQ','PLTR','TSLA','AAPL','AMD','APPS','BYND','PINS','GRMN','NKE','ORCL','FB','ZM','SPOT','NVDA','INTC','BRK-B','GOOG','UBER','TSM','UMC','MU','NFLX']
-    indexs = ['^DJI','^GSPC','^IXIC','^SOX']
+    # indexs = ['^DJI','^GSPC','^IXIC','^SOX']
     resultList = []
 
     for indexObj in indexList:
