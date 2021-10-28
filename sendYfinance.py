@@ -34,8 +34,6 @@ def sendYfinance():
             telegramBot.newSendMessage(tbStr, id)
 
         getDb.updateLastSendDate(fredData[0]['lastUpdateDate'], 'LAST_US_MARKET_SEND_DATE')
-  
-
 
     else:
         print('已發送過')

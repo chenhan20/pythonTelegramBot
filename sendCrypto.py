@@ -34,9 +34,6 @@ def sendCrypto():
             telegramBot.newSendMessage(tbStr, id)
 
         getDb.updateLastSendDate(cryptoData[0]['lastUpdateDate'], 'LAST_CRYPTO_SEND_DATE')
-  
-
-
     else:
         print('已發送過')
 
