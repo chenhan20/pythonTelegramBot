@@ -133,7 +133,11 @@ update accounts set telegram_push_crypto_enabled
  = true where telegram_push_enabled = true;
  ```
 
-### 尚未解決問題
+### 已解決問題
 
 * 有時三大法人資料會延遲 導致沒抓到資料 預計解法為 各個排成都要有一個當日有無發送成功的紀錄(未成功就要一直發)
     問題為不想一直跑排程
+
+### 尚未開發完成功能
+* 根據個人去區分follow_stock
+
