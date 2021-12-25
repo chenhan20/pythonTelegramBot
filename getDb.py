@@ -187,7 +187,7 @@ def addUser(fromUser):
             cur.execute(sql, (fromUser.first_name, fromUser.id))
         else:
             print('old accounts')
-            sql = 'UPDATE accounts SET telegram_push_enabled = True, telegram_push_tw_enabled = True, telegram_push_us_enabled = True, last_login = now() WHERE telegram_user_id = (%s)' 
+            sql = 'UPDATE accounts SET telegram_push_enabled = True, telegram_push_tw_enabled = True, telegram_push_us_enabled = True, telegram_push_crypto_enabled = True, last_login = now() WHERE telegram_user_id = (%s)' 
             cur.execute(sql, (str(fromUser.id),))
 
         conn.commit()       
