@@ -3,6 +3,7 @@ from telebot import types
 import configparser
 import getDb
 import announcement
+import telegramBot
 
 config = configparser.ConfigParser()
 config.sections()
@@ -16,7 +17,10 @@ def start (message):
     fromUser = message.from_user
     print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
     bot.reply_to(message,  str.format("Hi! {}歡迎你使用SteveBot 服務 \n今日起將會收到全球股市資訊 若不想在收到 請輸入\n/end", fromUser.first_name))
-    getDb.addUser(fromUser)
+    isNewUser = getDb.addUser(fromUser)
+    if isNewUser:
+        telegramBot.sendMessageForSteve('[ADMIN] new accounts name:' + fromUser.first_name)
+
 
 @bot.message_handler(commands=['end'])
 def end (message):

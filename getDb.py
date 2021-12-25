@@ -31,6 +31,27 @@ def getFollowStock(userId):
         print ("Exception TYPE:", type(error))
 
 
+def getUserFollowStock():
+    try:
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        print("Opened database successfully")
+        cur = conn.cursor()
+        postgreSQL_select_Query = "select user_id id, stock_code stock from follow_stock"
+        cur.execute(postgreSQL_select_Query)
+        userStockDict = dict()
+        rows = cur.fetchall()
+        stockCodeList = {1:'2330,1234,4566'};
+        for row in rows:
+            userId = str(row[0])
+            stockId = str(row[1])
+            userStockDict.setdefault(userId,stockId)
+        print(userStockDict)
+        return stockCodeList
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
+
 
 def getTelegramIds():
     try:
@@ -153,11 +174,13 @@ def getAccount(userId):
     #     print ("Exception TYPE:", type(error))
 
 def addUser(fromUser):
+    isNewUser = False
     try:
         account = getAccount(fromUser.id)
         conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
         cur = conn.cursor()
         if(len(account) == 0 ):
+            isNewUser = True
             print('new accounts')
             sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled, telegram_push_tw_enabled, telegram_push_us_enabled, telegram_push_crypto_enabled)' 
             sql += ' VALUES (%s, now(), now(), %s, true, true, true, true)'
@@ -172,6 +195,9 @@ def addUser(fromUser):
     except Exception as error:
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
+    finally:
+        return isNewUser
+
 
 def removeUser(fromUser):
     try:
@@ -276,11 +302,11 @@ def updateLastSendDate(lastSendDate,sendType):
         print ("Exception TYPE:", type(error))
 
 def getDb():
-    # print(getFollowStock(1))
+    print(getUserFollowStock())
     # print(getTelegramIds())
     # print(getTwTelegramIds())
     # print(getAccount())
-    print(getLastSendDate('LAST_FRED_SEND_DATE'))
+    # print(getLastSendDate('LAST_FRED_SEND_DATE'))
 
 if __name__ == '__main__':
     getDb()

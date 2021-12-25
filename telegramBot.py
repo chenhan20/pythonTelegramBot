@@ -14,7 +14,7 @@ config.read('setting.ini')
 token = config['DEFAULT']['TOKEN']
 bot = telegram.Bot(token=token)
 chatIdList = [919045167]  # 要放送給誰 之後要抓DB(account.telegram_user_id)
-
+steveTelegramId = 919045167
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 
@@ -49,3 +49,11 @@ def sendImage(image):
     for chat_id in chatIdList:
         bot.send_photo(chat_id=chat_id, photo=image)
 
+def sendMessageForSteve(msg):
+    try:
+        print(msg)
+        bot.sendMessage(steveTelegramId, msg, parse_mode='html',
+                disable_web_page_preview=True)
+    except Exception as error:
+        print ("發送失敗 Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
