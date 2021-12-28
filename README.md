@@ -124,6 +124,7 @@ VALUES
 INSERT INTO public.system_parameter(name,value,update_on)
 VALUES ('LAST_FRED_SEND_DATE', '0', now()) 
 ,('LAST_US_MARKET_SEND_DATE', '0', now())
+,('LAST_US_STOCK_SEND_DATE', '0', now())
 ,('LAST_CRYPTO_SEND_DATE', '0', now())
 
 update system_parameter set value = '0' where name = 'LAST_CRYPTO_SEND_DATE';
