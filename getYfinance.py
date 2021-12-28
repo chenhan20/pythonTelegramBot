@@ -20,8 +20,6 @@ indexList = [
 ]
 
 def getYfIndexData():
-    # stocks = ['SQ','PLTR','TSLA','AAPL','AMD','APPS','BYND','PINS','GRMN','NKE','ORCL','FB','ZM','SPOT','NVDA','INTC','BRK-B','GOOG','UBER','TSM','UMC','MU','NFLX']
-    # indexs = ['^DJI','^GSPC','^IXIC','^SOX']
     resultList = []
 
     for indexObj in indexList:
@@ -34,6 +32,29 @@ def getYfIndexData():
         indexGap = round(last_quote - last_second_quote, 1)
         percent = round(indexGap / last_second_quote * 100 , 1) 
         result['title'] = indexObj['displayName']
+        result['value'] = str(round(data.tail(1)['Close'].iloc[0],1))
+        result['indexGap'] = converterPrefix(indexGap)
+        converterPercent = str(percent).replace('+','').replace('-','')
+        result['gapPercent'] = converterPercent + '%'
+        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10] 
+        resultList.append(result)
+
+    return resultList
+
+def getYfStockData():
+    stocks = ['PLTR','TSLA','AAPL','AMD','APPS','NVDA','NFLX']
+    # indexs = ['^DJI','^GSPC','^IXIC','^SOX']
+    resultList = []
+
+    for name in stocks:
+        ticker = yf.Ticker(name)
+        result = dict()
+        data = ticker.history()
+        last_second_quote = data.tail(2)['Close'].iloc[0]
+        last_quote = data.tail(1)['Close'].iloc[0]
+        indexGap = round(last_quote - last_second_quote, 1)
+        percent = round(indexGap / last_second_quote * 100 , 1) 
+        result['title'] = name
         result['value'] = str(round(data.tail(1)['Close'].iloc[0],1))
         result['indexGap'] = converterPrefix(indexGap)
         converterPercent = str(percent).replace('+','').replace('-','')
@@ -85,4 +106,5 @@ def test():
 if __name__ == '__main__':
     # getYfDataOld(defaultStockList)
     # getYfData()
-    print(getCryptoData())
+    # print(getYfIndexData())
+    print(getYfStockData())
