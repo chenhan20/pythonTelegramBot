@@ -3,21 +3,22 @@ import yfinance as yf
 indexList = [
     {
         'name': '^DJI',
-        'displayName' : '道瓊DJI'
+        'displayName': '道瓊DJI'
     },
     {
         'name': '^GSPC',
-        'displayName' : 'S&P500'
+        'displayName': 'S&P500'
     },
     {
         'name': '^IXIC',
-        'displayName' : '納斯達克'
+        'displayName': '納斯達克'
     },
     {
         'name': '^SOX',
-        'displayName' : '費城半導體'
+        'displayName': '費城半導體'
     },
 ]
+
 
 def getYfIndexData():
     resultList = []
@@ -30,20 +31,19 @@ def getYfIndexData():
         last_second_quote = data.tail(2)['Close'].iloc[0]
         last_quote = data.tail(1)['Close'].iloc[0]
         indexGap = round(last_quote - last_second_quote, 1)
-        percent = round(indexGap / last_second_quote * 100 , 1) 
+        percent = round(indexGap / last_second_quote * 100, 1)
         result['title'] = indexObj['displayName']
-        result['value'] = str(round(data.tail(1)['Close'].iloc[0],1))
+        result['value'] = str(round(data.tail(1)['Close'].iloc[0], 1))
         result['indexGap'] = converterPrefix(indexGap)
-        converterPercent = str(percent).replace('+','').replace('-','')
+        converterPercent = str(percent).replace('+', '').replace('-', '')
         result['gapPercent'] = converterPercent + '%'
-        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10] 
+        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10]
         resultList.append(result)
 
     return resultList
 
 def getYfStockData():
-    stocks = ['PLTR','TSLA','AAPL','AMD','APPS','NVDA','NFLX']
-    # indexs = ['^DJI','^GSPC','^IXIC','^SOX']
+    stocks = ['PLTR', 'TSLA', 'AAPL', 'AMD', 'APPS', 'NVDA', 'NFLX', 'INTC']
     resultList = []
 
     for name in stocks:
@@ -53,19 +53,23 @@ def getYfStockData():
         last_second_quote = data.tail(2)['Close'].iloc[0]
         last_quote = data.tail(1)['Close'].iloc[0]
         indexGap = round(last_quote - last_second_quote, 1)
-        percent = round(indexGap / last_second_quote * 100 , 1) 
+        percent = round(indexGap / last_second_quote * 100, 1)
         result['title'] = name
-        result['value'] = str(round(data.tail(1)['Close'].iloc[0],1))
+        result['value'] = str(round(data.tail(1)['Close'].iloc[0], 1))
         result['indexGap'] = converterPrefix(indexGap)
-        converterPercent = str(percent).replace('+','').replace('-','')
+        converterPercent = str(percent).replace('+', '').replace('-', '')
+        result['percent'] = percent
         result['gapPercent'] = converterPercent + '%'
-        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10] 
+        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10]
         resultList.append(result)
+
+    resultList = sorted(resultList, key=lambda d: d['percent'], reverse = True)
 
     return resultList
 
+
 def getCryptoData():
-    cryptoNames = ['BTC-USD','ETH-USD','BNB-USD','CAKE-USD']
+    cryptoNames = ['BTC-USD', 'ETH-USD', 'BNB-USD', 'CAKE-USD']
     resultList = []
 
     for cryptoName in cryptoNames:
@@ -75,36 +79,37 @@ def getCryptoData():
         last_second_quote = data.tail(2)['Close'].iloc[0]
         last_quote = data.tail(1)['Close'].iloc[0]
         indexGap = round(last_quote - last_second_quote, 1)
-        percent = round(indexGap / last_second_quote * 100 , 1) 
+        percent = round(indexGap / last_second_quote * 100, 1)
         result['title'] = cryptoName
-        result['value'] = str(round(data.tail(1)['Close'].iloc[0],1))
+        result['value'] = str(round(data.tail(1)['Close'].iloc[0], 1))
         result['indexGap'] = converterPrefix(indexGap)
-        converterPercent = str(percent).replace('+','').replace('-','')
+        converterPercent = str(percent).replace('+', '').replace('-', '')
         result['gapPercent'] = converterPercent + '%'
-        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10] 
+        result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10]
         resultList.append(result)
 
     return resultList
 
+
 def converterPrefix(percent):
-    converterPercent = str(percent).replace('+','').replace('-','')
+    converterPercent = str(percent).replace('+', '').replace('-', '')
     converterValue = ''
     prefix = ''
-    if(percent>0):
+    if (percent > 0):
         prefix = '🔺'
-    elif(percent < 0):
+    elif (percent < 0):
         prefix = '🔻'
     converterValue = prefix + converterPercent
     return converterValue
 
 
 def test():
-
     for index in indexList:
         print(index['displayName'])
+
 
 if __name__ == '__main__':
     # getYfDataOld(defaultStockList)
     # getYfData()
     # print(getYfIndexData())
-    print(getYfStockData())
+    getYfStockData()
