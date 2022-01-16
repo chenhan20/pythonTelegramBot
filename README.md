@@ -89,17 +89,17 @@ heroku Scheduled
       <td>每天16:30</td>
     </tr>
     <tr>
-      <td>sendFred.py</td>
+      <td>sendYfinance.py</td>
       <td>美股三大指數收盤</td>
       <td>每天08:30</td>
     </tr>
     <tr>
-      <td>sendFred.py</td>
+      <td>sendUsaStock.py</td>
       <td>美股個股收盤</td>
       <td>每天08:30</td>
     </tr>
     <tr>
-      <td>sendFred.py</td>
+      <td>sendCrypto.py</td>
       <td>加密貨幣價格</td>
       <td>每天08:30</td>
     </tr>
