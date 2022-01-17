@@ -85,10 +85,10 @@ def getCryptoData():
             data = ticker.history()
             last_second_quote = data.tail(2)['Close'].iloc[0]
             last_quote = data.tail(1)['Close'].iloc[0]
-            indexGap = round(last_quote - last_second_quote, 3)
-            percent = round(indexGap / last_second_quote * 100, 3)
+            indexGap = round(last_quote - last_second_quote, 2)
+            percent = round(indexGap / last_second_quote * 100, 2)
             result['title'] = cryptoName.replace('-USD', '')
-            result['value'] = str(round(data.tail(1)['Close'].iloc[0], 3))
+            result['value'] = str(round(data.tail(1)['Close'].iloc[0], 2))
             result['indexGap'] = converterPrefix(indexGap)
             converterPercent = str(percent).replace('+', '').replace('-', '')
             result['percent'] = percent
