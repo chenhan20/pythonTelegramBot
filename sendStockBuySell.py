@@ -6,7 +6,6 @@ import prettytable as pt
 import time
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
-dateStr = '20220415'
 # 最多call五次(30分鐘) 都沒資料就不發了
 maxExecutionsCount = 5
 
