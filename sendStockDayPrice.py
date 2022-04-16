@@ -3,11 +3,11 @@ import datetime
 import telegramBot
 import getDb
 import time
+import converterUtils
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
-# 初始次數
-executionsCount = 0
+
 # 最多call五次(30分鐘) 都沒資料就不發了
 maxExecutionsCount = 5
 
@@ -16,9 +16,10 @@ def sendStockDayPrice(count):
     isTest = False
     count = count + 1
     stockDayData = three.getStockDayDetail(dateStr)
-    stockPriceList = stockDayData['stockPriceLsit']
+    stockPriceList = stockDayData['stockPriceList']
     dayList = stockDayData['dayList']
     upDown = stockDayData['upDown']
+    dayTotal = stockDayData['dayTotal']
     if len(stockPriceList) != 0:
         upList = []
         downList = []
@@ -33,8 +34,9 @@ def sendStockDayPrice(count):
             else:
                 noneList.append(stock)
 
+        sendStr = sendStr + converterDayTotal(dayTotal)
         sendStr = sendStr + converterDayList(dayList)
-        sendStr = sendStr + converterupDown(upDown)
+        sendStr = sendStr + converterUpDown(upDown)
         sendStr = sendStr + converterStockList('-📈📈📈漲📈📈📈- ', upList)
         sendStr = sendStr + converterStockList('-〽〽〽跌〽〽〽- ', downList)
         sendStr = sendStr + converterStockList('-💨💨無變化💨💨- ', noneList)
@@ -52,49 +54,20 @@ def sendStockDayPrice(count):
             time.sleep(300)
             sendStockDayPrice(count)
 
-# def sendStockDayPriceForUser():
-#     userData = getDb.getUserDetail()
-
-# stockDayData = three.getStockDayDetail(dateStr)
-# stockPriceList = stockDayData['stockPriceLsit']
-# dayList = stockDayData['dayList']
-# upDown = stockDayData['upDown']
-# if(len(stockPriceList) != 0):
-#     upList = []
-#     downList = []
-#     noneList = []
-#     sendStr = dateStr + '收盤資訊\n'
-#     for stock in stockPriceList:
-#         prefix = stock[9]
-#         if(prefix == '<p style= color:red>+</p>'):
-#             upList.append(stock)
-#         elif(prefix == '<p style= color:green>-</p>'):
-#             downList.append(stock)
-#         else:
-#             noneList.append(stock)
-
-#     sendStr = sendStr + converterDayList(dayList)
-#     sendStr = sendStr + converterupDown(upDown)
-#     sendStr = sendStr + converterStockList('-📈📈📈漲📈📈📈- ', upList)
-#     sendStr = sendStr + converterStockList('-〽〽〽跌〽〽〽- ', downList)
-#     sendStr = sendStr + converterStockList('-💨💨無變化💨💨- ', noneList)
-#     telegramBot.sendMessage(sendStr)
-# else:
-#     print(dateStr + '查無資料')
 
 def converterPrefix(prefix):
-    converterPrefix = ''
-    if (prefix.find('color:red') != -1):
-        converterPrefix = '🔺'
-    elif (prefix.find('color:green') != -1):
-        converterPrefix = '🔻'
-    return converterPrefix
+    prefixEmoji = ''
+    if prefix.find('color:red') != -1:
+        prefixEmoji = '🔺'
+    elif prefix.find('color:green') != -1:
+        prefixEmoji = '🔻'
+    return prefixEmoji
 
 
 def converterStockList(title, stockList):
-    str = ''
+    converterStr = ''
     if len(stockList) > 0:
-        str += '<code>' + title + '</code>\n'
+        converterStr += '<code>' + title + '</code>\n'
         for stock in stockList:
             stockName = '<a href="https://www.wantgoo.com/stock/' + stock[0] + '">' + stock[0] + stock[
                 1] + '</a>'
@@ -104,8 +77,19 @@ def converterStockList(title, stockList):
             chgPercent = float(chg) / float(price) * 100
             chgText = '(' + chgPrefix + chg + ' | {:.2f}%'.format(chgPercent) + ')'
             strTemp = stockName + ':<b>' + price + '</b>' + chgText
-            str = str + strTemp + '\n'
-    return str
+            converterStr = converterStr + strTemp + '\n'
+    return converterStr
+
+
+def converterDayTotal(dayTotal):
+    converterStr = ''
+    if len(dayTotal) > 0:
+        for stock in dayTotal:
+            stockName = '🔸🔸總成交量🔸🔸'
+            price = converterUtils.converterNumber(stock[1])
+            strTemp = stockName + ':<b>' + price + '</b>'
+            converterStr = converterStr + strTemp + '\n'
+    return converterStr
 
 
 def converterDayList(dayList):
@@ -123,9 +107,9 @@ def converterDayList(dayList):
     return converterStr
 
 
-def converterupDown(upDown):
+def converterUpDown(upDown):
     converterStr = ''
-    if (len(upDown) > 0):
+    if len(upDown) > 0:
         for stock in upDown:
             stockName = '<a href="https://www.wantgoo.com/stock/advance-decline-line">' + stock[0] + '</a>:'
             converterStr += stockName + '<b>' + stock[2] + '</b>' + '家\n'
@@ -134,5 +118,5 @@ def converterupDown(upDown):
 
 
 if __name__ == '__main__':
-    sendStockDayPrice(executionsCount)
+    sendStockDayPrice(0)
     # sendStockDayPriceForUser()

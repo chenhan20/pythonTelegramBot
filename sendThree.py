@@ -6,9 +6,6 @@ import prettytable as pt
 import time
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
-dateStr= '20220415'
-# 初始次數
-executionsCount = 0
 # 最多call五次(30分鐘) 都沒資料就不發了
 maxExecutionsCount = 5
 
@@ -61,4 +58,4 @@ def sendThree(count):
 
 
 if __name__ == '__main__':
-    sendThree(executionsCount)
+    sendThree(0)
