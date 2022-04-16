@@ -30,6 +30,8 @@ def getYfIndexData():
         data = ticker.history()
         last_second_quote = data.tail(2)['Close'].iloc[0]
         last_quote = data.tail(1)['Close'].iloc[0]
+        print(last_second_quote)
+        print(last_quote)
         indexGap = round(last_quote - last_second_quote, 1)
         percent = round(indexGap / last_second_quote * 100, 1)
         result['title'] = indexObj['displayName']
@@ -75,7 +77,8 @@ def getYfStockData():
 
 
 def getCryptoData():
-    cryptoNames = ['BTC-USD', 'ETH-USD', 'BNB-USD', 'CAKE-USD', 'SOL-USD', 'AVAX-USD', 'CRO-USD', 'FTT-USD']
+    cryptoNames = ['BTC-USD', 'ETH-USD', 'BNB-USD', 'CAKE-USD', 'SOL-USD',
+                   'AVAX-USD', 'CRO-USD', 'FTT-USD', 'LUNA1-USD', 'DOGE-USD']
     resultList = []
 
     for cryptoName in cryptoNames:
@@ -85,8 +88,13 @@ def getCryptoData():
             data = ticker.history()
             last_second_quote = data.tail(2)['Close'].iloc[0]
             last_quote = data.tail(1)['Close'].iloc[0]
-            indexGap = round(last_quote - last_second_quote, 2)
+            indexGap = round(last_quote - last_second_quote, 7)
             percent = round(indexGap / last_second_quote * 100, 2)
+            print(cryptoName)
+            print(last_second_quote)
+            print(last_quote)
+            print(indexGap)
+            print(percent)
             result['title'] = cryptoName.replace('-USD', '')
             result['value'] = str(round(data.tail(1)['Close'].iloc[0], 2))
             result['indexGap'] = converterPrefix(indexGap)
@@ -96,7 +104,7 @@ def getCryptoData():
             result['lastUpdateDate'] = str(data.tail(1)['Close'].index.values[0])[:10]
             resultList.append(result)
         except Exception as error:
-            print("Oops! An exception has occured:", error)
+            print("Oops! An exception has occurred:", error)
             print("Exception TYPE:", type(error))
             break
 
@@ -109,7 +117,7 @@ def getCryptoData():
 
 
 def converterPrefix(percent):
-    converterPercent = str(percent).replace('+', '').replace('-', '')
+    converterPercent = str(round(percent, 2)).replace('+', '').replace('-', '')
     converterValue = ''
     prefix = ''
     if percent > 0:

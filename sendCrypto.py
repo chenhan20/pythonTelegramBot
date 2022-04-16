@@ -4,13 +4,14 @@ import getDb
 import prettytable as pt
 
 def sendCrypto():
+    isTest = False
     cryptoData = yFinanceApi.getCryptoData()
     lastSendDate = getDb.getLastSendDate('LAST_CRYPTO_SEND_DATE')
     newUpdateDate = cryptoData[0]['lastUpdateDate']
     tb1 = pt.PrettyTable()
     tb1.set_style(pt.PLAIN_COLUMNS)
 
-    if lastSendDate != newUpdateDate:
+    if lastSendDate != newUpdateDate or isTest:
         title = str(newUpdateDate) + '加密貨幣價格'
         col1 = '貨幣名稱'
         col2 = '價格'
@@ -23,15 +24,15 @@ def sendCrypto():
             tb1.add_row([indexTitle, indexValue])
 
         tbStr = '<b>' + title + '</b>\n' + tb1.get_string() + ''
-        # print(tbStr)
-        # 測試用這個 
-        # telegramBot.newSendMessage(tbStr, '919045167')
 
-        telegramIds = getDb.getCryptoTelegramIds()
-        for sendId in telegramIds:
-            telegramBot.newSendMessage(tbStr, sendId)
-
-        getDb.updateLastSendDate(cryptoData[0]['lastUpdateDate'], 'LAST_CRYPTO_SEND_DATE')
+        if isTest:
+            # 測試用這個
+            telegramBot.newSendMessage(tbStr, '919045167')
+        else:
+            telegramIds = getDb.getCryptoTelegramIds()
+            for sendId in telegramIds:
+                telegramBot.newSendMessage(tbStr, sendId)
+            getDb.updateLastSendDate(cryptoData[0]['lastUpdateDate'], 'LAST_CRYPTO_SEND_DATE')
     else:
         print('已發送過')
 
