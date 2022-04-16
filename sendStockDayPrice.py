@@ -5,7 +5,6 @@ import getDb
 import time
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
-dateStr= '20220415'
 
 # 初始次數
 executionsCount = 0
