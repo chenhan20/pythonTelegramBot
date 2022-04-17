@@ -30,8 +30,6 @@ def getYfIndexData():
         data = ticker.history()
         last_second_quote = data.tail(2)['Close'].iloc[0]
         last_quote = data.tail(1)['Close'].iloc[0]
-        print(last_second_quote)
-        print(last_quote)
         indexGap = round(last_quote - last_second_quote, 1)
         percent = round(indexGap / last_second_quote * 100, 1)
         result['title'] = indexObj['displayName']
