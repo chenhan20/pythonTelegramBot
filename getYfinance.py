@@ -88,11 +88,6 @@ def getCryptoData():
             last_quote = data.tail(1)['Close'].iloc[0]
             indexGap = round(last_quote - last_second_quote, 7)
             percent = round(indexGap / last_second_quote * 100, 2)
-            print(cryptoName)
-            print(last_second_quote)
-            print(last_quote)
-            print(indexGap)
-            print(percent)
             result['title'] = cryptoName.replace('-USD', '')
             result['value'] = str(round(data.tail(1)['Close'].iloc[0], 2))
             result['indexGap'] = converterPrefix(indexGap)
