@@ -30,9 +30,9 @@ def sendMessage(msg):
 
 def newSendMessage(msg, telegramId):
     try:
-        print('ID:'  + telegramId + 'msg:' + msg)
         bot.sendMessage(telegramId, msg, parse_mode='html',
                 disable_web_page_preview=True)
+        print('ID:'  + telegramId + ' success!')
     except Exception as error:
         print ("發送失敗 Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
@@ -57,3 +57,12 @@ def sendMessageForSteve(msg):
     except Exception as error:
         print ("發送失敗 Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
+
+
+def sendFile(chat_id,file):
+    try:
+        bot.send_document(chat_id=chat_id,document=file)
+    except Exception as error:
+        print ("發送失敗 Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
