@@ -17,22 +17,31 @@ def sendWatchPrice():
     tb1.align[col1] = "l"
     tb1.align[col2] = "l"
     dateStr=now.strftime("%Y%m%d")
+    
+    if len(watchData) == 0:
+        print('查無資料')
+        return
 
     title = dateStr + '永生ROLEX報價'
     for data in watchData:
-        indexTitle = data['title'][:30] + data['highlight']
-        indexValue = '$' + data['price'] + ''
-        tb1.add_row([indexTitle, indexValue])
+        try:    
+            indexTitle = data['title'][:30] + data['highlight']
+            indexValue = '$' + format(data['price'],',')
+            tb1.add_row([indexTitle, indexValue])
+        except Exception as error:
+            print ("Oops! An exception has occured:", error)
+            print ("Exception TYPE:", type(error))
     tbStr = '' + title + '\n' + tb1.get_string() + ''
     f= open("watchPrice.txt","w+")
     f.write(tbStr)
     f.close()
-    file = open('watchPrice.txt', 'rb')
+    sendIds = ['919045167','1471601802']
+    # 測試用這個
     if isTest:
-        # 測試用這個
-        telegramBot.sendFile('919045167',file)
-        telegramBot.sendFile('1471601802',file)
-    file.close()
+        for sendId in sendIds:
+            file = open('watchPrice.txt', 'rb')
+            telegramBot.sendFile(sendId,file)
+            file.close()
 
 
 if __name__ == '__main__':
