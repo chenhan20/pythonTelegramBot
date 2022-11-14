@@ -3,16 +3,52 @@ from bs4 import BeautifulSoup
 import time
 
 
+watchStoreList = [
+    {
+        'storeCode': 'HS',
+        'storeName': '鴻昇',
+        'encoding': 'UTF-8',
+        'url': 'http://www.999watch.com/product.asp?cat=47',
+        'pageUrl': 'http://www.999watch.com/product.asp?index='
+    },
+    {
+        'storeCode': 'EGPS',
+        'storeName': '永生',
+        'encoding': 'big5',
+        'url': 'http://www.egps.com.tw/products.asp?subcat=350&type=open',
+        'pageUrl': 'http://www.egps.com.tw/products.asp?index='
+    },
+    # {
+    #     'storeCode': 'RD',
+    #     'storeName': '名錶雷達站',
+    #     'url': 'http://www.rdwatch.com.tw/product.asp?cat=47',
+    #     'encoding': 'big5',
+    # },
+]
+
 def getWatchPrice():
-    url = 'http://www.egps.com.tw/products.asp?subcat=350&type=open'
-    response = requests.get(url)
+    watchDict = dict()
+    for store in watchStoreList:
+        if store['storeCode'] == 'EGPS':
+            watchDict[store['storeCode']] = getEGPSWatchDate(store)
+        elif store['storeCode'] == 'HS':
+            watchDict[store['storeCode']] = getHSWatchDate(store)
+        elif store['storeCode'] == 'RD':
+            watchDict[store['storeCode']] = getRDWatchDate(store)
+        else:
+            continue
+    return watchDict
+    
+
+def getEGPSWatchDate(store):
+    response = requests.get(store['url'])
     if response.status_code != 200:
         return []
     cookies = response.cookies
-    response.encoding = 'big5'
+    response.encoding = store['encoding']
 
     soup = BeautifulSoup(response.text, "html.parser")
-    totalPage = len(soup.select('td.next_bg table tr td a')) - 5
+    totalPage = len(soup.select('td.next_bg table tr td a')) - 4
     watchList = []
     # FirstPage 
     toWatchData(soup,watchList)
@@ -21,22 +57,81 @@ def getWatchPrice():
     }
     for page in range(totalPage):
         time.sleep(30) # 增加間格 避免被鎖
-        response = requests.get('http://www.egps.com.tw/products.asp?index=' + str(page+2),headers=headers, cookies=cookies)
+        response = requests.get(store['pageUrl'] + str(page+2),headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
-        response.encoding = 'big5'
+        response.encoding = store['encoding']
         soup = BeautifulSoup(response.text, "html.parser")
         toWatchData(soup,watchList)
         print(page+2)
+        break
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
-    
+
+
+def getHSWatchDate(store):
+    response = requests.get(store['url'])
+    if response.status_code != 200:
+        return []
+    cookies = response.cookies
+    response.encoding = store['encoding']
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    totalPage = len(soup.select('td.next_bg table tr td a')) - 4
+    watchList = []
+    # FirstPage 
+    toWatchData(soup,watchList)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+    }
+    for page in range(totalPage):
+        time.sleep(30) # 增加間格 避免被鎖
+        response = requests.get(store['pageUrl'] + str(page+2),headers=headers, cookies=cookies)
+        if response.status_code != 200:
+            continue
+        response.encoding = store['encoding']
+        soup = BeautifulSoup(response.text, "html.parser")
+        toWatchData(soup,watchList)
+        
+
+    watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
+    return watchList
+
+
+def getRDWatchDate(store):
+    response = requests.get(store['url'])
+    if response.status_code != 200:
+        return []
+    cookies = response.cookies
+    response.encoding = store['encoding']
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    totalPage = len(soup.select('td.next_bg table tr td a')) - 5
+    print(totalPage)
+    # FirstPage 
+    toWatchData(soup,watchList)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+    }
+    # for page in range(totalPage):
+    #     time.sleep(30) # 增加間格 避免被鎖
+    #     response = requests.get('http://www.egps.com.tw/products.asp?index=' + str(page+2),headers=headers, cookies=cookies)
+    #     if response.status_code != 200:
+    #         continue
+    #     response.encoding = 'big5'
+    #     soup = BeautifulSoup(response.text, "html.parser")
+    #     toWatchData(soup,watchList)
+    #     print(page+2)
+    watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
+    return watchList
+
 
 def toWatchData(soup,watchList):
     watchTitleList = soup.find_all(attrs={"class":"a_table_list_txt"})
     watchPriceList = soup.select('span.shopping_Price')
     watchTitleHighlightList = soup.select('.a_table_list_txt font')
     if len(watchTitleList) == 0:
+        print('title = null')
         return;
     for idx, title in enumerate(watchTitleList):
         try:    
