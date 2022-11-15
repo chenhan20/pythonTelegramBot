@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-
+sleepTime = 30
 watchStoreList = [
     {
         'storeCode': 'HS',
@@ -52,19 +52,19 @@ def getEGPSWatchDate(store):
     watchList = []
     # FirstPage 
     toWatchData(soup,watchList)
+    print(store['storeName'] + 'totalPage:' + str(totalPage))
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
     for page in range(totalPage):
-        time.sleep(30) # 增加間格 避免被鎖
+        time.sleep(sleepTime) # 增加間格 避免被鎖
         response = requests.get(store['pageUrl'] + str(page+2),headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
         response.encoding = store['encoding']
         soup = BeautifulSoup(response.text, "html.parser")
         toWatchData(soup,watchList)
-        print(page+2)
-        break
+
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
 
@@ -78,6 +78,7 @@ def getHSWatchDate(store):
 
     soup = BeautifulSoup(response.text, "html.parser")
     totalPage = len(soup.select('td.next_bg table tr td a')) - 4
+    print(store['storeName'] + 'totalPage:' + str(totalPage))
     watchList = []
     # FirstPage 
     toWatchData(soup,watchList)
@@ -85,7 +86,7 @@ def getHSWatchDate(store):
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
     for page in range(totalPage):
-        time.sleep(30) # 增加間格 避免被鎖
+        time.sleep(sleepTime) # 增加間格 避免被鎖
         response = requests.get(store['pageUrl'] + str(page+2),headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
@@ -113,15 +114,14 @@ def getRDWatchDate(store):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
-    # for page in range(totalPage):
-    #     time.sleep(30) # 增加間格 避免被鎖
-    #     response = requests.get('http://www.egps.com.tw/products.asp?index=' + str(page+2),headers=headers, cookies=cookies)
-    #     if response.status_code != 200:
-    #         continue
-    #     response.encoding = 'big5'
-    #     soup = BeautifulSoup(response.text, "html.parser")
-    #     toWatchData(soup,watchList)
-    #     print(page+2)
+    for page in range(totalPage):
+        time.sleep(sleepTime) # 增加間格 避免被鎖
+        response = requests.get('http://www.egps.com.tw/products.asp?index=' + str(page+2),headers=headers, cookies=cookies)
+        if response.status_code != 200:
+            continue
+        response.encoding = store['encoding']
+        soup = BeautifulSoup(response.text, "html.parser")
+        toWatchData(soup,watchList)
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
 

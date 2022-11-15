@@ -24,7 +24,9 @@ def sendWatchPrice():
 
     title = dateStr + ' - ROLEX'
     for key,watchList in watchData.items():
-        tb1.add_row([key, ''])
+        tb1.add_row(['===============', '==============='])
+        tb1.add_row(['======= ' + key, ' ======='])
+        tb1.add_row(['===============', '==============='])
         try:
             for data in watchList:
                 indexTitle = data['title'][:30] + data['highlight']
@@ -35,17 +37,16 @@ def sendWatchPrice():
             print ("Exception TYPE:", type(error))
     tbStr = '' + title + '\n' + tb1.get_string() + ''
     print(tbStr)
-    f= open("watchPrice.txt","w+")
+    f= open("watchPrice.txt","w+", encoding='UTF-8')
     f.write(tbStr)
     f.close()
-    sendIds = ['919045167','']
+    sendIds = ['919045167','1471601802']
     # 測試用這個
-    # if isTest:
-    #     for sendId in sendIds:
-    #         file = open('watchPrice.txt', 'rb')
-    #         telegramBot.sendFile(sendId,file)
-    #         file.close()
-
+    if isTest:
+        for sendId in sendIds:
+            file = open('watchPrice.txt', 'rb')
+            telegramBot.sendFile(sendId,file)
+            file.close()
 
 if __name__ == '__main__':
     sendWatchPrice()
