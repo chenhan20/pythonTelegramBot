@@ -56,9 +56,9 @@ def getEGPSWatchDate(store):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
-    for page in range(totalPage):
+    for page in range(1,totalPage):
         time.sleep(sleepTime) # 增加間格 避免被鎖
-        response = requests.get(store['pageUrl'] + str(page+2),headers=headers, cookies=cookies)
+        response = requests.get(store['pageUrl'] + str(page+1),headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
         response.encoding = store['encoding']
@@ -85,15 +85,14 @@ def getHSWatchDate(store):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
-    for page in range(totalPage):
+    for page in range(1,totalPage):
         time.sleep(sleepTime) # 增加間格 避免被鎖
-        response = requests.get(store['pageUrl'] + str(page+2),headers=headers, cookies=cookies)
+        response = requests.get(store['pageUrl'] + str(page+1),headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
         response.encoding = store['encoding']
         soup = BeautifulSoup(response.text, "html.parser")
         toWatchData(soup,watchList)
-        
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
