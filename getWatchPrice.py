@@ -130,7 +130,7 @@ def getRDWatchDate(store):
                 continue
             response.encoding = store['encoding']
             soup = BeautifulSoup(response.text, "html.parser")
-            toWatchData(soup, watchList)
+            toRDWatchData(soup, watchList)
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
