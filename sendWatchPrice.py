@@ -30,7 +30,10 @@ def sendWatchPrice():
         try:
             for data in watchList:
                 indexTitle = data['title'] + data['highlight']
-                indexValue = '$' + format(data['price'],',')
+                if data['price'] == 999999999999:
+                    indexValue = '歡迎來電洽詢'
+                else:
+                    indexValue = '$' + format(data['price'],',')
                 tb1.add_row([indexTitle, indexValue])
         except Exception as error:
             print ("Oops! An exception has occured:", error)
