@@ -18,12 +18,13 @@ watchStoreList = [
         'url': 'http://www.egps.com.tw/products.asp?subcat=350&type=open',
         'pageUrl': 'http://www.egps.com.tw/products.asp?index='
     },
-    # {
-    #     'storeCode': 'RD',
-    #     'storeName': '名錶雷達站',
-    #     'url': 'http://www.rdwatch.com.tw/product.asp?cat=47',
-    #     'encoding': 'big5',
-    # },
+    {
+        'storeCode': 'RD',
+        'storeName': '名錶雷達站',
+        'url': 'http://www.rdwatch.com.tw/product.asp?cat=47',
+        'pageUrl': 'http://www.rdwatch.com.tw/index.asp?index=',
+        'encoding': 'UTF-8',
+    },
 ]
 
 
@@ -31,11 +32,11 @@ def getWatchPrice():
     watchDict = dict()
     for store in watchStoreList:
         if store['storeCode'] == 'EGPS':
-            watchDict[store['storeCode']] = getEGPSWatchDate(store)
+            watchDict[store['storeCode'] + '-' + store['storeName']] = getEGPSWatchDate(store)
         elif store['storeCode'] == 'HS':
-            watchDict[store['storeCode']] = getHSWatchDate(store)
+            watchDict[store['storeCode'] + '-' + store['storeName']] = getHSWatchDate(store)
         elif store['storeCode'] == 'RD':
-            watchDict[store['storeCode']] = getRDWatchDate(store)
+            watchDict[store['storeCode'] + '-' + store['storeName']] = getRDWatchDate(store)
         else:
             continue
     return watchDict
@@ -110,25 +111,23 @@ def getRDWatchDate(store):
     response.encoding = store['encoding']
 
     soup = BeautifulSoup(response.text, "html.parser")
-    totalPage = len(soup.select('td.next_bg table tr td a')) - 4
-    print(store['storeName'] + 'totalPage:' + str(totalPage))
+    totalPage = 10 # 放棄抓頁數了 呼叫不到就直接break就好 
     watchList = []
     # FirstPage
-    toWatchData(soup, watchList)
-    print(store['storeName'] + 'totalPage:' + str(totalPage))
+    toRDWatchData(soup, watchList)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
 
-    # for page in range(2, totalPage+1):
-    #     time.sleep(sleepTime)  # 增加間格 避免被鎖
-    #     response = requests.get(
-    #         store['pageUrl'] + str(page), headers=headers, cookies=cookies)
-    #     if response.status_code != 200:
-    #         continue
-    #     response.encoding = store['encoding']
-    #     soup = BeautifulSoup(response.text, "html.parser")
-    #     toWatchData(soup, watchList)
+    for page in range(2, totalPage+1):
+        time.sleep(sleepTime)  # 增加間格 避免被鎖
+        response = requests.get(
+            store['pageUrl'] + str(page), headers=headers, cookies=cookies)
+        if response.status_code != 200:
+            continue
+        response.encoding = store['encoding']
+        soup = BeautifulSoup(response.text, "html.parser")
+        toWatchData(soup, watchList)
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
@@ -147,9 +146,31 @@ def toWatchData(soup, watchList):
             price = int(watchPriceList[idx].getText())
             titleText = title.getText().replace('\r', '').replace('\n', '').replace('\t', '').replace('ROLEX', '').replace(
                 'rolex', '').replace('勞力士', '').replace('！', '').replace('∼', '').replace('  ', ' ').replace('夯', '')
-            result['title'] = titleText
+            result['title'] = titleText[:30]
             result['highlight'] = str(watchTitleHighlightList[idx].getText())
             result['price'] = price
+            watchList.append(result)
+        except Exception as error:
+            print("Oops! An exception has occured:", error)
+            print("Exception TYPE:", type(error))
+
+def toRDWatchData(soup, watchList):
+    watchTitleList = soup.select('a.a_table_list_txt span')
+    watchPriceList = soup.select('span.shopping_Price span')
+    watchTitleHighlightList = soup.select('a.a_table_list_txt font')
+    if len(watchTitleList) == 0:
+        print('title = null')
+        return
+    for idx, title in enumerate(watchTitleList):
+        try:
+            result = dict()
+            price = int(watchPriceList[idx].getText())
+            titleText = title.getText().replace('\r', '').replace('\n', '').replace('\t', '').replace('Rolex', '').replace('ROLEX', '').replace(
+                'rolex', '').replace('勞力士', '').replace('！', '').replace('∼', '').replace('  ', ' ').replace('夯', '')
+            result['title'] = titleText
+            result['highlight'] = ''
+            result['price'] = price
+            print(result['title'])
             watchList.append(result)
         except Exception as error:
             print("Oops! An exception has occured:", error)

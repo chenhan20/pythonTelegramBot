@@ -29,7 +29,7 @@ def sendWatchPrice():
         tb1.add_row(['===============', '==============='])
         try:
             for data in watchList:
-                indexTitle = data['title'][:30] + data['highlight']
+                indexTitle = data['title'] + data['highlight']
                 indexValue = '$' + format(data['price'],',')
                 tb1.add_row([indexTitle, indexValue])
         except Exception as error:
