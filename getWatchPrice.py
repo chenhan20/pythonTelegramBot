@@ -26,6 +26,7 @@ watchStoreList = [
     # },
 ]
 
+
 def getWatchPrice():
     watchDict = dict()
     for store in watchStoreList:
@@ -38,7 +39,7 @@ def getWatchPrice():
         else:
             continue
     return watchDict
-    
+
 
 def getEGPSWatchDate(store):
     response = requests.get(store['url'])
@@ -50,20 +51,22 @@ def getEGPSWatchDate(store):
     soup = BeautifulSoup(response.text, "html.parser")
     totalPage = len(soup.select('td.next_bg table tr td a')) - 4
     watchList = []
-    # FirstPage 
-    toWatchData(soup,watchList)
+    # FirstPage
+    toWatchData(soup, watchList)
     print(store['storeName'] + 'totalPage:' + str(totalPage))
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
-    for page in range(1,totalPage+1):
-        time.sleep(sleepTime) # 增加間格 避免被鎖
-        response = requests.get(store['pageUrl'] + str(page),headers=headers, cookies=cookies)
+
+    for page in range(2, totalPage+1):
+        time.sleep(sleepTime)  # 增加間格 避免被鎖
+        response = requests.get(
+            store['pageUrl'] + str(page), headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
         response.encoding = store['encoding']
         soup = BeautifulSoup(response.text, "html.parser")
-        toWatchData(soup,watchList)
+        toWatchData(soup, watchList)
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
@@ -80,19 +83,20 @@ def getHSWatchDate(store):
     totalPage = len(soup.select('td.next_bg table tr td a')) - 4
     print(store['storeName'] + 'totalPage:' + str(totalPage))
     watchList = []
-    # FirstPage 
-    toWatchData(soup,watchList)
+    # FirstPage
+    toWatchData(soup, watchList)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
-    for page in range(1,totalPage+1):
-        time.sleep(sleepTime) # 增加間格 避免被鎖
-        response = requests.get(store['pageUrl'] + str(page),headers=headers, cookies=cookies)
+    for page in range(2, totalPage+1):
+        time.sleep(sleepTime)  # 增加間格 避免被鎖
+        response = requests.get(
+            store['pageUrl'] + str(page), headers=headers, cookies=cookies)
         if response.status_code != 200:
             continue
         response.encoding = store['encoding']
         soup = BeautifulSoup(response.text, "html.parser")
-        toWatchData(soup,watchList)
+        toWatchData(soup, watchList)
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
@@ -106,51 +110,51 @@ def getRDWatchDate(store):
     response.encoding = store['encoding']
 
     soup = BeautifulSoup(response.text, "html.parser")
-    totalPage = len(soup.select('td.next_bg table tr td a')) - 5
-    print(totalPage)
-    # FirstPage 
-    toWatchData(soup,watchList)
+    totalPage = len(soup.select('td.next_bg table tr td a')) - 4
+    print(store['storeName'] + 'totalPage:' + str(totalPage))
+    watchList = []
+    # FirstPage
+    toWatchData(soup, watchList)
+    print(store['storeName'] + 'totalPage:' + str(totalPage))
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
     }
-    for page in range(totalPage):
-        time.sleep(sleepTime) # 增加間格 避免被鎖
-        response = requests.get('http://www.egps.com.tw/products.asp?index=' + str(page+2),headers=headers, cookies=cookies)
-        if response.status_code != 200:
-            continue
-        response.encoding = store['encoding']
-        soup = BeautifulSoup(response.text, "html.parser")
-        toWatchData(soup,watchList)
+
+    # for page in range(2, totalPage+1):
+    #     time.sleep(sleepTime)  # 增加間格 避免被鎖
+    #     response = requests.get(
+    #         store['pageUrl'] + str(page), headers=headers, cookies=cookies)
+    #     if response.status_code != 200:
+    #         continue
+    #     response.encoding = store['encoding']
+    #     soup = BeautifulSoup(response.text, "html.parser")
+    #     toWatchData(soup, watchList)
+
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
 
 
-def toWatchData(soup,watchList):
-    watchTitleList = soup.find_all(attrs={"class":"a_table_list_txt"})
+def toWatchData(soup, watchList):
+    watchTitleList = soup.find_all(attrs={"class": "a_table_list_txt"})
     watchPriceList = soup.select('span.shopping_Price')
     watchTitleHighlightList = soup.select('.a_table_list_txt font')
     if len(watchTitleList) == 0:
         print('title = null')
-        return;
+        return
     for idx, title in enumerate(watchTitleList):
-        try:    
+        try:
             result = dict()
             price = int(watchPriceList[idx].getText())
-            titleText = title.getText().replace('\r','').replace('\n','').replace('\t','').replace('ROLEX','').replace('rolex','').replace('勞力士','').replace('！','').replace('∼','').replace('  ',' ').replace('夯','')      
+            titleText = title.getText().replace('\r', '').replace('\n', '').replace('\t', '').replace('ROLEX', '').replace(
+                'rolex', '').replace('勞力士', '').replace('！', '').replace('∼', '').replace('  ', ' ').replace('夯', '')
             result['title'] = titleText
             result['highlight'] = str(watchTitleHighlightList[idx].getText())
             result['price'] = price
             watchList.append(result)
         except Exception as error:
-            print ("Oops! An exception has occured:", error)
-            print ("Exception TYPE:", type(error))
-
+            print("Oops! An exception has occured:", error)
+            print("Exception TYPE:", type(error))
 
 
 if __name__ == '__main__':
     print(getWatchPrice())  # 或是任何你想執行的函式
-    # testNumber = ['aaa','bbb','ccc','ddd','eee']
-    # for idx, x in enumerate(testNumber):
-    #     print(idx, x)
-
-        
