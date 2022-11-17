@@ -140,6 +140,7 @@ def toWatchData(soup, watchList):
     watchTitleList = soup.find_all(attrs={"class": "a_table_list_txt"})
     watchPriceList = soup.select('span.shopping_Price')
     watchTitleHighlightList = soup.select('.a_table_list_txt font')
+    
     if len(watchTitleList) == 0:
         print('title = null')
         return
@@ -167,14 +168,14 @@ def toRDWatchData(soup, watchList):
     for idx, title in enumerate(watchTitleList):
         try:
             result = dict()
-            print(noPriceCount)
             if len(title.find_parent('a').find_parent('td').find_parent('tr').find_next_sibling('tr').find_next_sibling('tr').select('span.shopping_Price span')) == 0 :
                 price = 999999999999
                 noPriceCount +=1
             else:
                 price = int(watchPriceList[idx - noPriceCount].getText())
-            
             titleText = replaceTitle(title.getText())
+            if titleText in '手工微雕錶節':
+                continue 
             result['title'] = titleText
             result['highlight'] = ''
             result['price'] = price
@@ -189,4 +190,4 @@ def replaceTitle(title):
 
 
 if __name__ == '__main__':
-    print(getWatchPrice())  # 或是任何你想執行的函式
+    getWatchPrice()  # 或是任何你想執行的函式
