@@ -3,8 +3,11 @@ from bs4 import BeautifulSoup
 import time
 
 sleepTime = 30
-singlePage = False
-
+singlePage = True
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
+}
+    
 watchStoreList = [
     {
         'storeCode': 'HS',
@@ -57,19 +60,16 @@ def getEGPSWatchDate(store):
     # FirstPage
     toWatchData(soup, watchList)
     print(store['storeName'] + 'totalPage:' + str(totalPage))
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
-    }
-
-    for page in range(2, totalPage+1):
-        time.sleep(sleepTime)  # 增加間格 避免被鎖
-        response = requests.get(
-            store['pageUrl'] + str(page), headers=headers, cookies=cookies)
-        if response.status_code != 200:
-            continue
-        response.encoding = store['encoding']
-        soup = BeautifulSoup(response.text, "html.parser")
-        toWatchData(soup, watchList)
+    if not singlePage:
+        for page in range(2, totalPage+1):
+            time.sleep(sleepTime)  # 增加間格 避免被鎖
+            response = requests.get(
+                store['pageUrl'] + str(page), headers=headers, cookies=cookies)
+            if response.status_code != 200:
+                continue
+            response.encoding = store['encoding']
+            soup = BeautifulSoup(response.text, "html.parser")
+            toWatchData(soup, watchList)
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
@@ -88,18 +88,17 @@ def getHSWatchDate(store):
     watchList = []
     # FirstPage
     toWatchData(soup, watchList)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
-    }
-    for page in range(2, totalPage+1):
-        time.sleep(sleepTime)  # 增加間格 避免被鎖
-        response = requests.get(
-            store['pageUrl'] + str(page), headers=headers, cookies=cookies)
-        if response.status_code != 200:
-            continue
-        response.encoding = store['encoding']
-        soup = BeautifulSoup(response.text, "html.parser")
-        toWatchData(soup, watchList)
+
+    if not singlePage:
+        for page in range(2, totalPage+1):
+            time.sleep(sleepTime)  # 增加間格 避免被鎖
+            response = requests.get(
+                store['pageUrl'] + str(page), headers=headers, cookies=cookies)
+            if response.status_code != 200:
+                continue
+            response.encoding = store['encoding']
+            soup = BeautifulSoup(response.text, "html.parser")
+            toWatchData(soup, watchList)
 
     watchList = sorted(watchList, key=lambda d: d['price'], reverse=True)
     return watchList
@@ -117,9 +116,6 @@ def getRDWatchDate(store):
     watchList = []
     # FirstPage
     toRDWatchData(soup, watchList)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
-    }
 
     if not singlePage:
         for page in range(2, totalPage+1):
@@ -149,8 +145,9 @@ def toWatchData(soup, watchList):
             result = dict()
             price = int(watchPriceList[idx].getText())
             titleText = replaceTitle(title.getText())
-            result['title'] = titleText[:30]
-            result['highlight'] = str(watchTitleHighlightList[idx].getText())
+            result['title'] = titleText
+            # result['highlight'] = str(watchTitleHighlightList[idx].getText())
+            result['highlight'] = ''
             result['price'] = price
             watchList.append(result)
         except Exception as error:
