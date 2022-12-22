@@ -4,6 +4,7 @@ import telegramBot
 import prettytable as pt
 import getWatchPrice as watchPrice
 import openpyxl
+import json
 
 
 
@@ -20,6 +21,7 @@ def sendWatchPrice():
     # txt暫時不開
     # toTxt(watchData.items())
     toExcel(watchData.items())
+    toJSON(watchData)
     
     sendIds = ['919045167','1471601802']
     # 測試用這個
@@ -32,6 +34,10 @@ def sendWatchPrice():
             # file = open('watchPrice.txt', 'rb')
             # telegramBot.sendFile(sendId,file)
             # file.close()
+            # JSON暫時不開
+            # file = open('watchPrice.json', 'rb')
+            # telegramBot.sendFile(sendId,file)
+            # file.close()
 
 def toExcel(watchData):
     workbook = openpyxl.Workbook()
@@ -42,8 +48,8 @@ def toExcel(watchData):
             workbook.create_sheet(key)
         sheet = workbook.worksheets[sheetIndex]
         sheet.title = key
-        sheet['A1'].value = '名稱'
-        sheet['B1'].value = '價格'
+        sheet['A1'].value = '價格'
+        sheet['B1'].value = '名稱'
         for idx, data in enumerate(watchList):
             excelStartRow = idx+2
             indexTitle = data['title'] + data['highlight']
@@ -51,11 +57,10 @@ def toExcel(watchData):
                 indexValue = '歡迎來電洽詢'
             else:
                 indexValue = '$' + format(data['price'],',')
-            sheet['A'+str(excelStartRow)] = indexTitle
-            sheet['B'+str(excelStartRow)] = indexValue
+            sheet['A'+str(excelStartRow)] = indexValue
+            sheet['B'+str(excelStartRow)] = indexTitle
             if(len(indexTitle) > textMaxLength):
                 textMaxLength = len(indexTitle)
-        print(textMaxLength)
         sheet.column_dimensions['A'].width = textMaxLength * 1.5
         sheet.column_dimensions['B'].width = 15
         
@@ -64,6 +69,12 @@ def toExcel(watchData):
     # 儲存檔案
     workbook.save('watchPrice.xlsx')
     
+    
+def toJSON(watchData):
+    # 儲存檔案
+    # Writing to sample.json
+    with open("watchPrice.json", "w", encoding='utf-8') as outfile:
+        json.dump(watchData, outfile, ensure_ascii=False, indent=4)
     
     
 def toTxt(watchData):

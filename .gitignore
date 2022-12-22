@@ -136,4 +136,4 @@ dmypy.json
 watchPrice.txt
 ~$watchPrice.xlsx
 watchPrice.xlsx
-.gitignore
+watchPrice.json
