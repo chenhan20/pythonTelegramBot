@@ -61,8 +61,8 @@ def toExcel(watchData):
             sheet['B'+str(excelStartRow)] = indexTitle
             if(len(indexTitle) > textMaxLength):
                 textMaxLength = len(indexTitle)
-        sheet.column_dimensions['A'].width = textMaxLength * 1.5
-        sheet.column_dimensions['B'].width = 15
+        sheet.column_dimensions['A'].width = 15
+        sheet.column_dimensions['B'].width = textMaxLength * 1.5
         
         sheetIndex = sheetIndex+1
         
