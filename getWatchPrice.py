@@ -7,27 +7,27 @@ singlePage = True
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
 }
-    
+
 watchStoreList = [
     {
         'storeCode': 'HS',
         'storeName': '鴻昇',
         'encoding': 'UTF-8',
-        'url': 'http://www.999watch.com/product.asp?cat=47',
-        'pageUrl': 'http://www.999watch.com/product.asp?index='
+        'url': 'https://www.999watch.com/product.asp?cat=47',
+        'pageUrl': 'https://www.999watch.com/product.asp?index='
     },
     {
         'storeCode': 'EGPS',
         'storeName': '永生',
         'encoding': 'big5',
-        'url': 'http://www.egps.com.tw/products.asp?subcat=350&type=open',
-        'pageUrl': 'http://www.egps.com.tw/products.asp?index='
+        'url': 'https://www.egps.com.tw/products.asp?subcat=350',
+        'pageUrl': 'https://www.egps.com.tw/products.asp?index='
     },
     {
         'storeCode': 'RD',
         'storeName': '名錶雷達站',
-        'url': 'http://www.rdwatch.com.tw/product.asp?cat=47',
-        'pageUrl': 'http://www.rdwatch.com.tw/index.asp?index=',
+        'url': 'https://www.rdwatch.com.tw/product.asp?cat=47',
+        'pageUrl': 'https://www.rdwatch.com.tw/index.asp?index=',
         'encoding': 'UTF-8',
     },
 ]
@@ -53,7 +53,6 @@ def getEGPSWatchDate(store):
         return []
     cookies = response.cookies
     response.encoding = store['encoding']
-
     soup = BeautifulSoup(response.text, "html.parser")
     totalPage = len(soup.select('td.next_bg table tr td a')) - 4
     watchList = []
@@ -84,7 +83,6 @@ def getHSWatchDate(store):
 
     soup = BeautifulSoup(response.text, "html.parser")
     totalPage = len(soup.select('td.next_bg table tr td a')) - 4
-    print(store['storeName'] + 'totalPage:' + str(totalPage))
     watchList = []
     # FirstPage
     toWatchData(soup, watchList)
@@ -112,7 +110,7 @@ def getRDWatchDate(store):
     response.encoding = store['encoding']
 
     soup = BeautifulSoup(response.text, "html.parser")
-    totalPage = 10 # 放棄抓頁數了 呼叫不到就直接break就好 
+    totalPage = 10 # 放棄抓頁數了 呼叫不到就直接break就好
     watchList = []
     # FirstPage
     toRDWatchData(soup, watchList)
@@ -136,7 +134,7 @@ def toWatchData(soup, watchList):
     watchTitleList = soup.find_all(attrs={"class": "a_table_list_txt"})
     watchPriceList = soup.select('span.shopping_Price')
     watchTitleHighlightList = soup.select('.a_table_list_txt font')
-    
+
     if len(watchTitleList) == 0:
         print('title = null')
         return
@@ -172,7 +170,7 @@ def toRDWatchData(soup, watchList):
                 price = int(watchPriceList[idx - noPriceCount].getText())
             titleText = replaceTitle(title.getText())
             if titleText in '手工微雕錶節':
-                continue 
+                continue
             result['title'] = titleText
             result['highlight'] = ''
             result['price'] = price
@@ -183,7 +181,8 @@ def toRDWatchData(soup, watchList):
 
 def replaceTitle(title):
     return title.replace('\r', '').replace('\n', '').replace('\t', '').replace('Rolex', '').replace('ROLEX', '').replace(
-                'rolex', '').replace('勞力士', '').replace('！', '').replace('∼', '').replace('  ', ' ').replace('夯', '')
+                'rolex', '').replace('勞力士', '').replace('！', '').replace('∼', '').replace('  ', ' ').replace('夯', '').replace(
+                    '此錶歡迎各路錶友以 PP、AP、RM、 來店交換，本店將以最高價評估','(接受交換)')
 
 
 if __name__ == '__main__':
