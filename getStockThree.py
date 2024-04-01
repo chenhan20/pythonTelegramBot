@@ -1,9 +1,6 @@
 import pandas as pd
 import json
 import requests
-import time
-import datetime
-import telegramBot
 import getDb
 
 # 偽瀏覽器
@@ -113,7 +110,9 @@ def less_than_updown(symbol):
 
 
 def getDayStockThreeBuySell(dateStr):
-    url = 'https://www.twse.com.tw/fund/T86?response=json&date=' + dateStr + '&selectType=ALL'
+    url = 'https://www.twse.com.tw/rwd/zh/fund/T86?date=' + \
+        dateStr + '&response=json&selectType=ALL'
+        
     res = requests.get(url, headers=headers)
     stockData = json.loads(res.text)
 
@@ -126,7 +125,8 @@ def getDayStockThreeBuySell(dateStr):
 
 
 def getWeekStockThreeBuySell(dateStr):
-    url = 'https://www.twse.com.tw/fund/TWT54U?response=json&date=' + dateStr + '&selectType=ALL'
+    url = 'https://www.twse.com.tw/fund/TWT54U?response=json&date=' + \
+        dateStr + '&selectType=ALL'
     res = requests.get(url, headers=headers)
     stockData = json.loads(res.text)
 
@@ -139,7 +139,8 @@ def getWeekStockThreeBuySell(dateStr):
 
 
 def getStockDayDetail(dateStr):
-    url = 'https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + dateStr + '&type=ALL'
+    url = 'https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + \
+        dateStr + '&type=ALL'
     res = requests.get(url, headers=headers)
     stockData = json.loads(res.text)
     dayData = {}
@@ -149,19 +150,56 @@ def getStockDayDetail(dateStr):
         dayList = list(filter(less_than_day, stockData['data1']))
         upDown = list(filter(less_than_updown, stockData['data8']))
         dayTotal = list(filter(less_than_total, stockData['data7']))
-        dayData['stockPriceList'] = sorted(filterList, key=lambda s: float(s[10]), reverse=True)
+        dayData['stockPriceList'] = sorted(
+            filterList, key=lambda s: float(s[10]), reverse=True)
         dayData['dayList'] = dayList
         dayData['upDown'] = upDown
         dayData['dayTotal'] = dayTotal
     else:
         print(stockData['stat'])
 
+    print(dayData)
     return dayData
 
 
+def getAllUserStockDayDetail(dateStr, telegramIds):
+    url = 'https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=' + \
+        dateStr + '&type=ALL'
+    res = requests.get(url, headers=headers)
+    stockData = json.loads(res.text)
+    dayData = dict()
+
+    if stockData['stat'] == 'OK':
+        allWatchList = getAllFollowStockCode()
+        for telegramId in telegramIds:
+            data = {}
+            filterList = getUserStock(
+                stockData['data9'], allWatchList.get(telegramId))
+            dayList = list(filter(less_than_day, stockData['data1']))
+            upDown = list(filter(less_than_updown, stockData['data8']))
+            dayTotal = list(filter(less_than_total, stockData['data7']))
+            data['stockPriceList'] = sorted(
+                filterList, key=lambda s: float(s[10]), reverse=True)
+            data['dayList'] = dayList
+            data['upDown'] = upDown
+            data['dayTotal'] = dayTotal
+            dayData.setdefault(telegramId, data)
+    else:
+        stockData['stat']
+
+    return dayData
+
+
+def getUserStock(data, watchList):
+    if watchList == None:
+        return None
+    else:
+        return list(filter(lambda x: x[0] in watchList, data))
+
+
 def test():
-    converterNumber(1123456789999)
-
-
+    print(getDayStockThreeBuySell('20240401'))
+    # getStockDayDetail('20240119')
+    
 if __name__ == '__main__':
     test()
