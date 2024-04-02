@@ -1,11 +1,14 @@
+import asyncio
+
 import sendUsaStock
-import sendYfinance 
+import sendYfinance
 import sendCrypto
 
+
 def callSend():
-    sendYfinance.sendYfinance()
-    sendCrypto.sendCrypto()
-    sendUsaStock.sendUsaStock()
+    asyncio.run(sendYfinance.sendYfinance())
+    asyncio.run(sendCrypto.sendCrypto())
+    asyncio.run(sendUsaStock.sendUsaStock())
 
 
 if __name__ == '__main__':
