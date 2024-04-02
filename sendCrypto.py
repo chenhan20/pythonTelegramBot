@@ -1,9 +1,12 @@
+import asyncio
+
 import getYfinance as yFinanceApi
 import telegramBot
 import getDb
 import prettytable as pt
 
-def sendCrypto():
+
+async def sendCrypto():
     isTest = False
     cryptoData = yFinanceApi.getCryptoData()
     lastSendDate = getDb.getLastSendDate('LAST_CRYPTO_SEND_DATE')
@@ -27,15 +30,16 @@ def sendCrypto():
 
         if isTest:
             # 測試用這個
-            telegramBot.newSendMessage(tbStr, '919045167')
+            await telegramBot.newSendMessage(tbStr, '919045167')
         else:
             telegramIds = getDb.getCryptoTelegramIds()
             for sendId in telegramIds:
-                telegramBot.newSendMessage(tbStr, sendId)
+                await telegramBot.newSendMessage(tbStr, sendId)
             getDb.updateLastSendDate(cryptoData[0]['lastUpdateDate'], 'LAST_CRYPTO_SEND_DATE')
     else:
         print('已發送過')
 
 
 if __name__ == '__main__':
-    sendCrypto()
+    asyncio.run(sendCrypto())
+

@@ -4,6 +4,7 @@ import telegramBot
 import getDb
 import time
 import converterUtils
+import asyncio
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
@@ -12,7 +13,7 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 maxExecutionsCount = 5
 
 
-def sendStockDayPrice(count):
+async def sendStockDayPrice(count):
     isTest = False
     count = count + 1
     stockDayData = three.getStockDayDetail(dateStr)
@@ -43,16 +44,16 @@ def sendStockDayPrice(count):
 
         if isTest:
             # 測試用這個
-            telegramBot.newSendMessage(sendStr, '919045167')
+            await telegramBot.newSendMessage(sendStr, '919045167')
         else:
             telegramIds = getDb.getTwTelegramIds()
             for telegramId in telegramIds:
-                telegramBot.newSendMessage(sendStr, telegramId)
+                await telegramBot.newSendMessage(sendStr, telegramId)
     else:
         print(dateStr + '查無資料')
         if count < maxExecutionsCount:
             time.sleep(300)
-            sendStockDayPrice(count)
+            await sendStockDayPrice(count)
 
 
 def converterPrefix(prefix):
@@ -118,5 +119,5 @@ def converterUpDown(upDown):
 
 
 if __name__ == '__main__':
-    sendStockDayPrice(0)
+    asyncio.run(sendStockDayPrice(0))
     # sendStockDayPriceForUser()

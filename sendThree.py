@@ -4,13 +4,14 @@ import telegramBot
 import getDb
 import prettytable as pt
 import time
+import asyncio
 
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 # 最多call五次(30分鐘) 都沒資料就不發了
 maxExecutionsCount = 5
 
 
-def sendThree(count):
+async def sendThree(count):
     isTest = False
     count = count + 1
     threeData = three.getThree(dateStr)
@@ -45,17 +46,17 @@ def sendThree(count):
 
         if isTest:
             # 測試用這個
-            telegramBot.newSendMessage(tbStr, '919045167')
+            await telegramBot.newSendMessage(tbStr, '919045167')
         else:
             telegramIds = getDb.getTwTelegramIds()
             for telegramId in telegramIds:
-                telegramBot.newSendMessage(tbStr, telegramId)
+                await telegramBot.newSendMessage(tbStr, telegramId)
     else:
         print(dateStr + '查無資料')
         if count < maxExecutionsCount:
             time.sleep(300)
-            sendThree(count)
+            await sendThree(count)
 
 
 if __name__ == '__main__':
-    sendThree(0)
+    asyncio.run(sendThree(0))

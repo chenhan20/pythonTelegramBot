@@ -27,20 +27,20 @@ def getHolding():
 
 
 def converterNumber(num):
-    prefix = '+';
-    if (num < 0):
+    prefix = '+'
+    if num < 0:
         prefix = '-'
     absNum = abs(num)
     numberLength = len(str(absNum))
-    converterNumber = num
-    if (numberLength > 12):
-        converterNumber = str(round(absNum / 1000000000000, 2)) + '兆'
-    elif (numberLength > 8 and numberLength <= 12):
-        converterNumber = str(round(absNum / 100000000, 2)) + '億'
-    elif (numberLength > 4 and numberLength <= 8):
-        converterNumber = str(round(absNum / 10000, 2)) + '萬'
-    converterNumber = prefix + converterNumber
-    return converterNumber
+    convertedNumber = num  # 修改此处变量名
+    if numberLength > 12:
+        convertedNumber = str(round(absNum / 1000000000000, 2)) + '兆'
+    elif 8 < numberLength <= 12:
+        convertedNumber = str(round(absNum / 100000000, 2)) + '億'
+    elif 4 < numberLength <= 8:
+        convertedNumber = str(round(absNum / 10000, 2)) + '萬'
+    convertedNumber = prefix + str(convertedNumber)  # 将整数转换为字符串
+    return convertedNumber
 
 
 def converter(data):

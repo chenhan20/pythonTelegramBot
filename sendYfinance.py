@@ -1,3 +1,5 @@
+import asyncio
+
 import getYfinance as yFinanceApi
 import datetime
 from datetime import timedelta, date
@@ -6,7 +8,7 @@ import getDb
 import prettytable as pt
 
 
-def sendYfinance():
+async def sendYfinance():
     isTest = False
     fredData = yFinanceApi.getYfIndexData()
     lastSendDate = getDb.getLastSendDate('LAST_US_MARKET_SEND_DATE')
@@ -28,11 +30,11 @@ def sendYfinance():
         tbStr = '<b>' + title + '</b>\n' + tb1.get_string() + ''
         if isTest:
             # 測試用這個
-            telegramBot.newSendMessage(tbStr, '919045167')
+            await telegramBot.newSendMessage(tbStr, '919045167')
         else:
             telegramIds = getDb.getUsTelegramIds()
             for id in telegramIds:
-                telegramBot.newSendMessage(tbStr, id)
+                await telegramBot.newSendMessage(tbStr, id)
             getDb.updateLastSendDate(fredData[0]['lastUpdateDate'], 'LAST_US_MARKET_SEND_DATE')
 
     else:
@@ -40,4 +42,5 @@ def sendYfinance():
 
 
 if __name__ == '__main__':
-    sendYfinance()
+    asyncio.run(sendYfinance())
+

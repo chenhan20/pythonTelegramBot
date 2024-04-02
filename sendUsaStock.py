@@ -1,12 +1,12 @@
+import asyncio
+
 import getYfinance as yFinanceApi
-import datetime
-from datetime import timedelta, date
 import telegramBot
 import getDb
 import prettytable as pt
 
 
-def sendUsaStock():
+async def sendUsaStock():
     isTest = False
     usaData = yFinanceApi.getYfStockData()
     lastSendDate = getDb.getLastSendDate('LAST_US_STOCK_SEND_DATE')
@@ -30,11 +30,11 @@ def sendUsaStock():
 
         if isTest:
             # 測試用這個
-            telegramBot.newSendMessage(tbStr, '919045167')
+            await telegramBot.newSendMessage(tbStr, '919045167')
         else:
             telegramIds = getDb.getUsTelegramIds()
             for telegramId in telegramIds:
-                telegramBot.newSendMessage(tbStr, telegramId)
+                await telegramBot.newSendMessage(tbStr, telegramId)
             getDb.updateLastSendDate(usaData[0]['lastUpdateDate'], 'LAST_US_STOCK_SEND_DATE')
 
     else:
@@ -42,4 +42,4 @@ def sendUsaStock():
 
 
 if __name__ == '__main__':
-    sendUsaStock()
+    asyncio.run(sendUsaStock())

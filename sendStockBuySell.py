@@ -1,3 +1,4 @@
+import asyncio
 import getStockThree as three
 import datetime
 import telegramBot
@@ -10,18 +11,16 @@ dateStr = datetime.datetime.now().strftime("%Y%m%d")
 maxExecutionsCount = 5
 
 
-def getDayStockThreeBuySell(count):
+async def getDayStockThreeBuySell(count):
     isTest = False
     count = count + 1
-    threeStockList = three.getDayStockThreeBuySell(dateStr)
+    threeStockList = three.getDayStockThreeBuySell('20240402')
     if len(threeStockList) != 0:
-        tb1 = pt.PrettyTable()
-        tb1.set_style(pt.PLAIN_COLUMNS)
+        formatted_str = ""
         col1 = dateStr
         col2 = '三大法人個股買賣超'
-        tb1.field_names = [col1, col2]
-        tb1.align[col1] = "l"
-        tb1.align[col2] = "r"
+        formatted_str += f"{col1} {' ' * (20 - len(col1))} {col2}\n"
+        formatted_str += '-' * 50 + '\n'
         overbuyList = []
         overSellList = []
         noneList = []
@@ -33,36 +32,47 @@ def getDayStockThreeBuySell(count):
                 overSellList.append(stock)
             else:
                 noneList.append(stock)
-        converterBuySellList('😺買超😺', overbuyList, tb1)
-        converterBuySellList('🙀賣超🙀', overSellList, tb1)
-        converterBuySellList('無變化', noneList, tb1)
-        tbStr = '<pre>' + tb1.get_string() + '</pre>'
-
+        formatted_str += converterBuySellList('😺買超😺', overbuyList)
+        formatted_str += converterBuySellList('🙀賣超🙀', overSellList)
+        formatted_str += converterBuySellList('無變化', noneList)
+        tbStr = '<pre>' + formatted_str + '</pre>'
+        print(tbStr)
         if isTest:
             # 測試用這個
-            telegramBot.newSendMessage(tbStr, '919045167')
+            await telegramBot.newSendMessage(tbStr, '919045167')
         else:
             telegramIds = getDb.getTwTelegramIds()
             for telegramId in telegramIds:
-                telegramBot.newSendMessage(tbStr, telegramId)
+                await telegramBot.newSendMessage(tbStr, telegramId)
     else:
         print(dateStr + '查無資料')
         if count < maxExecutionsCount:
             time.sleep(300)
-            getDayStockThreeBuySell(count)
+            await getDayStockThreeBuySell(count)
 
 
-def converterBuySellList(title, stockList, tb1):
+def converterBuySellList(title, stockList):
+    formatted_str = ""
     if len(stockList) > 0:
-        tb1.add_row(['<code>' + title + '</code>', ''])
-        tb1.add_row(['------------------', ''])
+        formatted_str += f"<code>{title}</code>\n"
+        formatted_str += '-' * 20 + '\n'
         for stock in stockList:
-            stockName = '<code>' + stock[0] + '-' + stock[1] + '</code>'
-            stockName = stockName.replace(' ', '')
+            stockName = f"<code>{stock[0]}-{stock[1]}</code>".replace(' ', '')
             buySell = converterNumber(stock[18])
-            buySellText = '<b>' + buySell + '張</b>'
-            buySellText = buySellText.replace(' ', '')
-            tb1.add_row([stockName, buySellText])
+            buySellText = f"<b>{buySell}張</b>".replace(' ', '')
+            formatted_str += f"{stockName} {' ' * (20 - len(stockName))} {buySellText}\n"
+    return formatted_str
+
+    # if len(stockList) > 0:
+    #     tb1.add_row(['<code>' + title + '</code>', ''])
+    #     tb1.add_row(['------------------', ''])
+    #     for stock in stockList:
+    #         stockName = '<code>' + stock[0] + '-' + stock[1] + '</code>'
+    #         stockName = stockName.replace(' ', '')
+    #         buySell = converterNumber(stock[18])
+    #         buySellText = '<b>' + buySell + '張</b>'
+    #         buySellText = buySellText.replace(' ', '')
+    #         tb1.add_row([stockName, buySellText])
 
 
 def converterNumber(number):
@@ -77,4 +87,5 @@ def converterNumber(number):
 
 
 if __name__ == '__main__':
-    getDayStockThreeBuySell(0)
+    asyncio.run(getDayStockThreeBuySell(0))
+

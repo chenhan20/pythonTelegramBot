@@ -7,5 +7,4 @@ def converterNumber(num):
         converterNum = str(round(converterNum / 100000000, 2)) + '億'
     elif 4 < numberLength <= 8:
         converterNum = str(round(converterNum / 10000, 2)) + '萬'
-    converterNum = converterNum
     return converterNum

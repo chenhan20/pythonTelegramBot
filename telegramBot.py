@@ -18,51 +18,64 @@ steveTelegramId = 919045167
 dateStr = datetime.datetime.now().strftime("%Y%m%d")
 
 
-def sendMessage(msg):
+async def sendMessage(msg):
     try:
         for chat_id in chatIdList:
             print(msg)
-            bot.sendMessage(chat_id, msg, parse_mode='html',
-                            disable_web_page_preview=True)
+            await bot.sendMessage(chat_id, 
+                                  msg, 
+                                  parse_mode='html',
+                                  disable_web_page_preview=True)
     except Exception as error:
-        print ("發送失敗 Oops! An exception has occured:", error)
-        print ("Exception TYPE:", type(error))
+        print("發送失敗 Oops! An exception has occurred:", error)
+        print("Exception TYPE:", type(error))
 
-def newSendMessage(msg, telegramId):
+
+async def newSendMessage(msg, telegramId):
     try:
-        bot.sendMessage(telegramId, msg, parse_mode='html',
-                disable_web_page_preview=True)
+        await bot.sendMessage(telegramId,
+                              msg,
+                              parse_mode='html',
+                              disable_web_page_preview=True)
         print('ID:'  + telegramId + ' success!')
     except Exception as error:
-        print ("發送失敗 Oops! An exception has occured:", error)
-        print ("Exception TYPE:", type(error))
+        print("發送失敗 Oops! An exception has occurred:", error)
+        print("Exception TYPE:", type(error))
 
-def newSendAnnouncementMessage(msg, telegramId):
+
+async def newSendAnnouncementMessage(msg, telegramId):
     try:
-        bot.sendMessage(telegramId, msg, parse_mode='html',
-                disable_web_page_preview=False)
+        await bot.sendMessage(telegramId,
+                              msg,
+                              parse_mode='html',
+                              disable_web_page_preview=False)
     except Exception as error:
-        print ("發送失敗 Oops! An exception has occured:", error)
-        print ("Exception TYPE:", type(error))
+        print("發送失敗 Oops! An exception has occurred:", error)
+        print("Exception TYPE:", type(error))
 
-def sendImage(image):
+
+async def sendImage(image):
     for chat_id in chatIdList:
-        bot.send_photo(chat_id=chat_id, photo=image)
+        await bot.send_photo(chat_id=chat_id, photo=image)
 
-def sendMessageForSteve(msg):
+
+async def sendMessageForSteve(msg):
     try:
         print(msg)
-        bot.sendMessage(steveTelegramId, msg, parse_mode='html',
-                disable_web_page_preview=True)
+        await bot.sendMessage(steveTelegramId,
+                              msg,
+                              parse_mode='html',
+                              disable_web_page_preview=True)
     except Exception as error:
-        print ("發送失敗 Oops! An exception has occured:", error)
-        print ("Exception TYPE:", type(error))
+        print("發送失敗 Oops! An exception has occurred:", error)
+        print("Exception TYPE:", type(error))
 
 
-def sendFile(chat_id,file):
+async def sendFile(chat_id, file):
     try:
-        bot.send_document(chat_id=chat_id,document=file)
+        await bot.send_document(chat_id=chat_id,
+                                document=file)
     except Exception as error:
-        print ("發送失敗 Oops! An exception has occured:", error)
-        print ("Exception TYPE:", type(error))
+        print("發送失敗 Oops! An exception has occurred:", error)
+        print("Exception TYPE:", type(error))
 
