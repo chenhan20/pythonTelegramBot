@@ -14,7 +14,7 @@ maxExecutionsCount = 5
 async def getDayStockThreeBuySell(count):
     isTest = False
     count = count + 1
-    threeStockList = three.getDayStockThreeBuySell('20240402')
+    threeStockList = three.getDayStockThreeBuySell(dateStr)
     if len(threeStockList) != 0:
         formatted_str = ""
         col1 = dateStr
