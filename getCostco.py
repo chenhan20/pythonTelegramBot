@@ -48,6 +48,7 @@ def toTxt(costcoData):
     tb1.align[col1] = "l"
     tb1.align[col2] = "l"
     dateStr = now.strftime("%Y%m%d")
+    // TEST COMMIT
     title = f'{dateStr} - COSTCO 特價商品'
 
     for data in costcoData:
