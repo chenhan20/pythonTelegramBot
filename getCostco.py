@@ -6,6 +6,7 @@ import datetime
 import telegramBot
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
+import getDb
 
 url = 'https://www.costco.com.tw/rest/v2/taiwan/products/search?fields=FULL&query=&pageSize=100&category=hot-buys&lang=zh_TW&curr=TWD'
 now = datetime.datetime.now()
@@ -36,11 +37,11 @@ async def getData():
 
     to_excel(data_list)
     # toTxt(data_list, date_str)
-    send_ids = ['919045167', '1471601802']
-    for sendId in send_ids:
+    telegram_ids = getDb.getCostcoTelegramIds()
+    for sendId in telegram_ids:
         # 使用 with 確保檔案正確開啟和關閉
         with open(file_name, 'rb') as file:
-            await telegramBot.sendFile(sendId, file,  f'{date_str} 好事多商品特價訊息')
+            await telegramBot.sendFile(sendId, file,  f'{date_str} 好事多商品特價訊息\n 若不想收到請輸入\n/endCostco')
 
 
 def toTxt(costcoData, date_str):

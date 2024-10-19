@@ -70,6 +70,21 @@ def end (message):
     print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
     bot.reply_to(message,  str.format("Thank you! {} 感謝你的使用 已暫停加密貨幣訂閱通知 若想再收到 請輸入\n/startCrypto 或是全部訂閱\n/start", fromUser.first_name))
     getDb.enabledCrypto(fromUser, False)
+
+
+@bot.message_handler(commands=['startCostco'])
+def start (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Hi! {} \n今日起將會收到COSTCO商品特價資訊 若不想再收到 請輸入\n/endCostco", fromUser.first_name))
+    getDb.enabledCostco(fromUser, True)
+
+@bot.message_handler(commands=['endCostco'])
+def end (message):
+    fromUser = message.from_user
+    print(fromUser.last_name + fromUser.first_name + '(' + str(fromUser.id) + ') : ' + message.text)
+    bot.reply_to(message,  str.format("Thank you! {} 感謝你的使用 已暫停COSTCO商品特價資訊訂閱通知 若想再收到 請輸入\n/startCostco 或是全部訂閱\n/startCostco", fromUser.first_name))
+    getDb.enabledCostco(fromUser, False)
     
 @bot.message_handler(commands=['announcement'])
 def sendAnnouncement (message):

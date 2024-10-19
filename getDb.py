@@ -132,6 +132,25 @@ def getCryptoTelegramIds():
         print ("Oops! An exception has occured:", error)
         print ("Exception TYPE:", type(error))
 
+def getCostcoTelegramIds():
+    try:
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        print("Opened database successfully")
+        cur = conn.cursor()
+        postgreSQL_select_Query = "select telegram_user_id from accounts where telegram_push_costco_enabled = true "
+        cur.execute(postgreSQL_select_Query)
+
+        rows = cur.fetchall()
+        ids = [];
+        for row in rows:
+            ids.append(row[0])
+
+        return ids
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
+
 def getAccount(userId):
     try:
         conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
@@ -266,6 +285,26 @@ def enabledCrypto(fromUser, enabled):
             sql = 'UPDATE accounts SET telegram_push_crypto_enabled = %s, last_login = now() WHERE telegram_user_id = (%s)' 
             cur.execute(sql, (enabled, str(fromUser.id),))
         conn.commit()       
+
+    except Exception as error:
+        print ("Oops! An exception has occured:", error)
+        print ("Exception TYPE:", type(error))
+
+def enabledCostco(fromUser, enabled):
+    try:
+        account = getAccount(fromUser.id)
+        conn = psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+        cur = conn.cursor()
+        if(len(account) == 0 ):
+            print('new accounts')
+            sql = 'INSERT INTO accounts(username, created_on, last_login, telegram_user_id, telegram_push_enabled, telegram_push_tw_enabled, telegram_push_us_enabled, telegram_push_crypto_enabled, telegram_push_costco_enabled)'
+            sql += ' VALUES (%s, now(), now(), %s, true, true, true, true)'
+            cur.execute(sql, (fromUser.first_name, fromUser.id))
+        else:
+            print('old accounts')
+            sql = 'UPDATE accounts SET telegram_push_costco_enabled = %s, last_login = now() WHERE telegram_user_id = (%s)'
+            cur.execute(sql, (enabled, str(fromUser.id),))
+        conn.commit()
 
     except Exception as error:
         print ("Oops! An exception has occured:", error)
