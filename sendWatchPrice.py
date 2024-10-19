@@ -25,7 +25,7 @@ async def sendWatchPrice():
     # 測試用這個
     for sendId in sendIds:
         file = open('watchPrice.xlsx', 'rb')
-        await telegramBot.sendFile(sendId, file)
+        await telegramBot.sendFile(sendId, file, '每日手錶報價')
         file.close()
         # txt暫時不開
         # file = open('watchPrice.txt', 'rb')

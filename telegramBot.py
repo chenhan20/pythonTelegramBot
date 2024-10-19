@@ -71,10 +71,11 @@ async def sendMessageForSteve(msg):
         print("Exception TYPE:", type(error))
 
 
-async def sendFile(chat_id, file):
+async def sendFile(chat_id, file, file_caption):
     try:
         await bot.send_document(chat_id=chat_id,
-                                document=file)
+                                document=file,
+                                caption=file_caption)
     except Exception as error:
         print("發送失敗 Oops! An exception has occurred:", error)
         print("Exception TYPE:", type(error))
